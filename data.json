@@ -14,6 +14,15 @@
   ],
   "aiWorks": [
     {
+      "title": "Эгоист",
+      "model": "Suno v5",
+      "cover": "",
+      "audioUrl": "neiromusic/Эгоист.mp3",
+      "prompt": "alternative rock",
+      "description": "Тупо песня про меня",
+      "isFavorite": true
+    },
+    {
       "title": "Протест против всего мира",
       "model": "Suno v5",
       "cover": "neiromusic/Протест против всего мира.jpg",
