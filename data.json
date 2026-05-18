@@ -75,6 +75,13 @@
   ],
   "upcomingReleases": [
     {
+      "type": "Альбом",
+      "title": "my worries about u",
+      "expectedDate": "Август 2026",
+      "cover": "photo/photo_2.jpg",
+      "description": "1. Don't listen this pls\n2. i feel empty inside me\n3. i hope you back to me\n4. i'm crying every day\n5. thereis no limit to sadness\n6. your feels"
+    },
+    {
       "type": "Сингл",
       "title": "Друзья",
       "expectedDate": "Июнь 2026",
