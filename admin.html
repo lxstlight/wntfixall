@@ -109,7 +109,7 @@
         <a href="index.html" class="back-nav"><i class="fa-solid fa-angle-left"></i> ESC_RETURN_TO_DEN</a>
         
         <header class="terminal-header">
-            <div class="terminal-title">WNT_ANARCHY_CONSL_v4.2.1<span class="cursor-blink"></span></div>
+            <div class="terminal-title">WNT_ANARCHY_CONSL_v4.2.5<span class="cursor-blink"></span></div>
         </header>
 
         <div class="terminal-stats">
@@ -130,6 +130,7 @@
                         <option value="blog">2. BLOG_THOUGHT_PACKET</option>
                         <option value="ai">3. NEURAL_SYNTH_WAVE_PACKET</option>
                         <option value="art">4. VISUAL_ART_DATA_PACKET</option>
+                        <option value="upcoming">5. UPCOMING_RELEASE_PACKET</option>
                     </select>
                 </div>
 
@@ -142,6 +143,7 @@
                     </div>
                 </div>
 
+                <!-- ФОРМА: РЕЛИЗЫ -->
                 <form id="termAlbumForm" onsubmit="saveTermData(event, 'album')">
                     <div class="term-form-group">
                         <label>RELEASE_TYPE</label>
@@ -155,12 +157,14 @@
                     <button type="submit" class="term-btn" id="btn_album">EXECUTE_INJECT</button>
                 </form>
 
+                <!-- ФОРМА: БЛОГ -->
                 <form id="termBlogForm" onsubmit="saveTermData(event, 'blog')" style="display: none;">
                     <div class="term-form-group"><label>THOUGHT_HEADER</label><input type="text" class="term-control" id="blogTitle" required></div>
                     <div class="term-form-group"><label>LOG_CONTENT</label><textarea class="term-control" id="blogText" rows="6" required></textarea></div>
                     <button type="submit" class="term-btn" id="btn_blog">EXECUTE_INJECT</button>
                 </form>
 
+                <!-- ФОРМА: ИИ-ТРЕКИ -->
                 <form id="termAiForm" onsubmit="saveTermData(event, 'ai')" style="display: none;">
                     <div class="term-form-group"><label>SYNTH_TITLE</label><input type="text" class="term-control" id="aiTitle" required></div>
                     <div class="term-form-group"><label>AI_MODEL</label><input type="text" class="term-control" id="aiModel" required></div>
@@ -175,6 +179,7 @@
                     <button type="submit" class="term-btn" id="btn_ai">EXECUTE_INJECT</button>
                 </form>
 
+                <!-- ФОРМА: АРТЫ -->
                 <form id="termArtForm" onsubmit="saveTermData(event, 'art')" style="display: none;">
                     <div class="term-form-group"><label>ART_TITLE</label><input type="text" class="term-control" id="artTitle" required></div>
                     <div class="term-form-group"><label>ARTIST</label><input type="text" class="term-control" id="artArtist" required></div>
@@ -182,17 +187,31 @@
                     <div class="term-form-group"><label>DESC</label><textarea class="term-control" id="artDesc" rows="2"></textarea></div>
                     <button type="submit" class="term-btn" id="btn_art">EXECUTE_INJECT</button>
                 </form>
+
+                <!-- ФОРМА: ПРЕДСТОЯЩИЕ РЕЛИЗЫ -->
+                <form id="termUpcomingForm" onsubmit="saveTermData(event, 'upcoming')" style="display: none;">
+                    <div class="term-form-group">
+                        <label>UPCOMING_RELEASE_TYPE</label>
+                        <select class="term-control" id="upcomingType"><option>Альбом</option><option>Сингл</option><option>EP</option></select>
+                    </div>
+                    <div class="term-form-group"><label>TITLE</label><input type="text" class="term-control" id="upcomingTitle" required></div>
+                    <div class="term-form-group"><label>EXPECTED_DATE</label><input type="text" class="term-control" id="upcomingDate" required placeholder="Например: Осень 2026 / 15.11.2026"></div>
+                    <div class="term-form-group"><label>COVER_PATH</label><input type="text" class="term-control" id="upcomingCover"></div>
+                    <div class="term-form-group"><label>DESC</label><textarea class="term-control" id="upcomingDesc" rows="3"></textarea></div>
+                    <button type="submit" class="term-btn" id="btn_upcoming">EXECUTE_INJECT</button>
+                </form>
             </div>
 
             <div class="terminal-panel" style="border-color: var(--term-amber); box-shadow: 0 0 25px rgba(255, 176, 0, 0.1), inset 0 0 15px rgba(255, 176, 0, 0.05);">
                 <h3 style="color: var(--term-green); text-shadow: 0 0 5px var(--term-green-glow); border-color: var(--term-green);">ACTIVE_SYSTEM_DATABASE</h3>
                 <div style="margin-bottom: 20px;">
                     <label style="font-size: 11px; text-transform: uppercase; color: var(--term-amber); display: block; margin-bottom: 8px;">FILTER_BY_NODE_SECTOR</label>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;">
                         <button onclick="filterDB('album')" class="term-btn" style="font-size: 11px; padding: 6px;">RELEASES</button>
                         <button onclick="filterDB('blog')" class="term-btn" style="font-size: 11px; padding: 6px;">LOGS</button>
                         <button onclick="filterDB('ai')" class="term-btn" style="font-size: 11px; padding: 6px;">SYNTHS</button>
                         <button onclick="filterDB('art')" class="term-btn" style="font-size: 11px; padding: 6px;">VISUALS</button>
+                        <button onclick="filterDB('upcoming')" class="term-btn" style="font-size: 11px; padding: 6px; color: var(--term-amber) !important; border-color: var(--term-amber) !important;">UPCOMING</button>
                     </div>
                 </div>
                 <div class="term-items-list" id="dbList"></div>
@@ -205,6 +224,7 @@
         let blogPosts = JSON.parse(localStorage.getItem('wnt_blog')) || [];
         let aiWorks = JSON.parse(localStorage.getItem('wnt_ai')) || [];
         let artWorks = JSON.parse(localStorage.getItem('wnt_arts')) || [];
+        let upcomingReleases = JSON.parse(localStorage.getItem('wnt_upcoming')) || [];
 
         let isEditing = false;
         let editType = '';
@@ -243,7 +263,7 @@
 
         function toggleTermFormFields() {
             const type = document.getElementById('termContentType').value;
-            ['album', 'blog', 'ai', 'art'].forEach(t => document.getElementById(`term${t.charAt(0).toUpperCase() + t.slice(1)}Form`).style.display = t === type ? 'block' : 'none');
+            ['album', 'blog', 'ai', 'art', 'upcoming'].forEach(t => document.getElementById(`term${t.charAt(0).toUpperCase() + t.slice(1)}Form`).style.display = t === type ? 'block' : 'none');
         }
 
         function filterDB(type) {
@@ -254,7 +274,7 @@
         function renderDB() {
             const container = document.getElementById('dbList');
             container.innerHTML = '';
-            let target = activeFilter === 'album' ? albums : activeFilter === 'blog' ? blogPosts : activeFilter === 'ai' ? aiWorks : artWorks;
+            let target = activeFilter === 'album' ? albums : activeFilter === 'blog' ? blogPosts : activeFilter === 'ai' ? aiWorks : activeFilter === 'art' ? artWorks : upcomingReleases;
 
             if (target.length === 0) {
                 container.innerHTML = `<div style="color: var(--term-amber); text-align: center; padding: 20px;">[SECTOR_EMPTY]</div>`;
@@ -266,7 +286,19 @@
                 if (activeFilter === 'ai' && item.isFavorite) {
                     favIndicator = ' [★ FAV]';
                 }
-                let metaText = activeFilter === 'album' ? `TYPE: ${item.type}` : activeFilter === 'blog' ? `DATE: ${item.date}` : activeFilter === 'ai' ? `MODEL: ${item.model}${favIndicator}` : `ARTIST: ${item.artist}`;
+                let metaText = '';
+                if (activeFilter === 'album') {
+                    metaText = `TYPE: ${item.type}`;
+                } else if (activeFilter === 'blog') {
+                    metaText = `DATE: ${item.date}`;
+                } else if (activeFilter === 'ai') {
+                    metaText = `MODEL: ${item.model}${favIndicator}`;
+                } else if (activeFilter === 'art') {
+                    metaText = `ARTIST: ${item.artist}`;
+                } else if (activeFilter === 'upcoming') {
+                    metaText = `EXPECTED: ${item.expectedDate} [${item.type}]`;
+                }
+                
                 container.innerHTML += `
                     <div class="term-item-row">
                         <div class="term-item-info">
@@ -316,6 +348,13 @@
                 document.getElementById('artImage').value = artWorks[idx].image;
                 document.getElementById('artDesc').value = artWorks[idx].description;
                 document.getElementById('btn_art').textContent = 'SAVE_PACKET';
+            } else if (type === 'upcoming') {
+                document.getElementById('upcomingType').value = upcomingReleases[idx].type;
+                document.getElementById('upcomingTitle').value = upcomingReleases[idx].title;
+                document.getElementById('upcomingDate').value = upcomingReleases[idx].expectedDate;
+                document.getElementById('upcomingCover').value = upcomingReleases[idx].cover;
+                document.getElementById('upcomingDesc').value = upcomingReleases[idx].description;
+                document.getElementById('btn_upcoming').textContent = 'SAVE_PACKET';
             }
         }
 
@@ -350,6 +389,16 @@
                 data = { title: document.getElementById('artTitle').value, artist: document.getElementById('artArtist').value, image: document.getElementById('artImage').value, description: document.getElementById('artDesc').value };
                 if(isEditing) artWorks[editIndex] = data; else artWorks.unshift(data);
                 localStorage.setItem('wnt_arts', JSON.stringify(artWorks));
+            } else if (type === 'upcoming') {
+                data = {
+                    type: document.getElementById('upcomingType').value,
+                    title: document.getElementById('upcomingTitle').value,
+                    expectedDate: document.getElementById('upcomingDate').value,
+                    cover: document.getElementById('upcomingCover').value,
+                    description: document.getElementById('upcomingDesc').value
+                };
+                if(isEditing) upcomingReleases[editIndex] = data; else upcomingReleases.unshift(data);
+                localStorage.setItem('wnt_upcoming', JSON.stringify(upcomingReleases));
             }
 
             notify("PACKET INJECTED! EXPORT JSON TO APPLY TO SERVER.");
@@ -363,6 +412,7 @@
                 if(type==='blog'){ blogPosts.splice(idx,1); localStorage.setItem('wnt_blog', JSON.stringify(blogPosts)); }
                 if(type==='ai'){ aiWorks.splice(idx,1); localStorage.setItem('wnt_ai', JSON.stringify(aiWorks)); }
                 if(type==='art'){ artWorks.splice(idx,1); localStorage.setItem('wnt_arts', JSON.stringify(artWorks)); }
+                if(type==='upcoming'){ upcomingReleases.splice(idx,1); localStorage.setItem('wnt_upcoming', JSON.stringify(upcomingReleases)); }
                 renderDB();
                 notify("PACKET DESTROYED");
             }
@@ -377,7 +427,7 @@
         }
 
         function exportDataToJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ albums, blogPosts, aiWorks, artWorks }, null, 2));
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ albums, blogPosts, aiWorks, artWorks, upcomingReleases }, null, 2));
             const a = document.createElement('a'); a.href = dataStr; a.download = "data.json"; document.body.appendChild(a); a.click(); a.remove();
         }
 
@@ -391,6 +441,7 @@
                     if(d.blogPosts) { blogPosts = d.blogPosts; localStorage.setItem('wnt_blog', JSON.stringify(blogPosts)); }
                     if(d.aiWorks) { aiWorks = d.aiWorks; localStorage.setItem('wnt_ai', JSON.stringify(aiWorks)); }
                     if(d.artWorks) { artWorks = d.artWorks; localStorage.setItem('wnt_arts', JSON.stringify(artWorks)); }
+                    if(d.upcomingReleases) { upcomingReleases = d.upcomingReleases; localStorage.setItem('wnt_upcoming', JSON.stringify(upcomingReleases)); }
                     renderDB(); notify("JSON CORE OVERWRITTEN");
                 } catch(e) { notify("JSON PARSE ERROR"); }
             }; reader.readAsText(file);

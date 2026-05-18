@@ -20,6 +20,8 @@
             --text-color: #ffd0b3;        
             --text-light: #f8fafc;
             --blur-menu: rgba(8, 8, 12, 0.7);
+            --term-amber: #ffb000;
+            --term-amber-glow: rgba(255, 176, 0, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
@@ -189,7 +191,7 @@
         /* ПЛАВАЮЩАЯ ИКОНКА YOUTUBE */
         .fixed-youtube-badge {
             position: fixed;
-            bottom: 160px; /* Смещено вверх, чтобы поместить FurAffinity */
+            bottom: 160px;
             right: 30px;
             background: rgba(255, 0, 0, 0.15);
             backdrop-filter: blur(15px);
@@ -219,7 +221,7 @@
         /* ПЛАВАЮЩАЯ ИКОНКА FURAFFINITY */
         .fixed-furaffinity-badge {
             position: fixed;
-            bottom: 105px; /* Смещено между YouTube и Collab */
+            bottom: 105px;
             right: 30px;
             background: rgba(250, 175, 64, 0.15);
             backdrop-filter: blur(15px);
@@ -337,7 +339,7 @@
         .slider-outer-wrapper { position: relative; width: 100%; }
         .slider-container { width: 100%; overflow: hidden; padding: 15px 5px; }
         .slider-track { display: flex; gap: 28px; transition: transform 0.6s cubic-bezier(0.2, 1, 0.2, 1); will-change: transform; }
-        .album-card { flex: 0 0 310px; background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255, 69, 0, 0.15); cursor: pointer; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s, box-shadow 0.4s, opacity 0.4s ease; overflow: hidden; }
+        .album-card { flex: 0 0 310px; background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255, 69, 0, 0.1); cursor: pointer; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s, box-shadow 0.4s, opacity 0.4s ease; overflow: hidden; }
         .album-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.15); }
         .album-cover { width: 100%; aspect-ratio: 1; background: #140e0e; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #ff4500; position: relative; overflow: hidden; }
         .album-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
@@ -346,6 +348,17 @@
         .album-info { padding: 22px; }
         .album-title { font-size: 19px; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .album-year { font-size: 14px; color: var(--text-color); font-weight: 500; }
+
+        /* СТИЛЬ ПРЕДСТОЯЩИХ РЕЛИЗОВ В СЛАЙДЕРЕ */
+        .album-card.upcoming {
+            border: 1px dashed var(--term-amber);
+            box-shadow: 0 0 15px rgba(255, 176, 0, 0.15);
+        }
+        .album-badge.upcoming-badge {
+            background: rgba(255, 176, 0, 0.15);
+            color: var(--term-amber);
+            border: 1px solid rgba(255, 176, 0, 0.3);
+        }
 
         .slider-controls { display: flex; gap: 12px; }
         .slider-btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 69, 0, 0.1); border: 1px solid rgba(255, 69, 0, 0.2); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.3s; }
@@ -607,7 +620,7 @@
             box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
         }
         
-        /* --- СТИЛИ ПРЕДПРОСМОТРА ПОСЛЕДНЕГО ВИДЕО YOUTUBE (СПОСОБ №1) --- */
+        /* --- СТИЛИ ПРЕДПРОСМОТРА ПОСЛЕДНЕГО ВИДЕО YOUTUBE --- */
         .youtube-preview-container {
             width: 100%;
             background: rgba(15, 12, 12, 0.4);
@@ -655,7 +668,6 @@
             transform: scale(1.04);
             filter: brightness(0.8);
         }
-        /* Светящаяся нативная кнопка Play по центру */
         .youtube-play-overlay-btn {
             position: absolute;
             top: 50%; left: 50%;
@@ -744,7 +756,6 @@
     <div class="glowing-music-player" id="glowingMusicPlayer">
         <div class="player-header">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <!-- Добавлен контейнер для обложки трека в левой части плеера -->
                 <div id="playerTrackCover" style="width: 48px; height: 48px; border-radius: 8px; overflow: hidden; background: #140e0e; border: 1px solid rgba(255, 69, 0, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 10px rgba(255, 69, 0, 0.15);">
                     <img src="" alt="" style="width: 100%; height: 100%; object-fit: cover; display: none;" id="playerCoverImg" onerror="this.style.display='none'; document.getElementById('playerCoverIcon').style.display='block';">
                     <i class="fa-solid fa-music" style="color: var(--accent-color); font-size: 16px;" id="playerCoverIcon"></i>
@@ -818,7 +829,7 @@
         <main class="container">
             <section id="music">
                 <div class="section-header">
-                    <h2 data-translate="section-releases">Музыкальные релизы</h2>
+                    <h2 data-translate="section-releases">Релизы</h2>
                     <div class="slider-controls">
                         <button class="slider-btn" id="slidePrev"><i class="fa-solid fa-arrow-left"></i></button>
                         <button class="slider-btn" id="slideNext"><i class="fa-solid fa-arrow-right"></i></button>
@@ -829,7 +840,7 @@
                 </div>
             </section>
 
-            <!-- КРАСИВЫЙ СТИЛЬНЫЙ БЛОК ДЛЯ ИЗБРАННЫХ ИИ-ШЕДЕВРЯХ -->
+            <!-- КРАСИВЫЙ СТИЛЬНЫЙ БЛОК ДЛЯ ИЗБРАННЫХ ИИ-ШЕДЕВРОВ -->
             <section id="featured-ai-section" style="display: none;">
                 <div class="section-header">
                     <h2 data-translate="section-featured-ai">Избранные ИИ-Шедевры</h2>
@@ -839,13 +850,13 @@
                 </div>
             </section>
 
-            <!-- СЕКЦИЯ ПОСЛЕДНЕГО ВИДЕО С YOUTUBE (СПОСОБ №1 - ПРЕДПРОСМОТР) -->
+            <!-- СЕКЦИЯ ПОСЛЕДНЕГО ВИДЕО С YOUTUBE -->
             <section id="youtube-video-section">
                 <div class="section-header">
                     <h2 data-translate="section-youtube">Новое видео на YouTube</h2>
                 </div>
                 <div id="youtubeContainer">
-                    <!-- Динамически рендерится через JS с подгрузкой нативной обложки -->
+                    <!-- Динамическая загрузка -->
                 </div>
             </section>
 
@@ -903,7 +914,7 @@
             <div class="fursona-view">
                 <h2 style="font-family:'Outfit'; margin-bottom: 15px;" data-translate="fursona-modal-title">Моя Фурсона 🐾</h2>
                 <div class="fursona-img-wrapper"><img src="photo_2026-05-18_09-49-03.jpg" alt="RaiDash" onerror="this.src='https://placehold.co/400?text=RaiDash'"></div>
-                <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; text-align: left; background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: 12px; border-left: 3px solid var(--accent-color);" data-translate="fursona-modal-desc">Рей — гепард-броні з яскравими зеленими очима та пристрастю до глибокого ембієнту. Метелик на лапці символизирует легке натхнення.</p>
+                <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; text-align: left; background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: 12px; border-left: 3px solid var(--accent-color);" data-translate="fursona-modal-desc">Рей — гепард-броні з яскравими зеленими очима та пристрастю до глибокого ембієнту. Метелик на лапці символізует легке натхнення.</p>
             </div>
         </div>
     </div>
@@ -923,12 +934,15 @@
         const defaultArts = [
             { title: "Рей и бабочка", artist: "Неизвестный художник", image: "photo_2026-05-18_09-49-03.jpg", description: "Главный арт моей фурсоны. Нежный гепард созерцает прекрасную голубую бабочку." }
         ];
+        const defaultUpcoming = [
+            { type: "EP", title: "Лесной Эмбиент", expectedDate: "Осень 2026", cover: "photo_2026-05-18_09-49-03.jpg", description: "Глубокое погружение в шёпот листвы и прохладные сумерки." }
+        ];
 
-        // Инициализируем локальные копии с жестким фоллбеком на дефолтные массивы
         let albums = JSON.parse(localStorage.getItem('wnt_albums')) || defaultAlbums;
         let blogPosts = JSON.parse(localStorage.getItem('wnt_blog')) || defaultBlog;
         let aiWorks = JSON.parse(localStorage.getItem('wnt_ai')) || defaultAiWorks;
         let artWorks = JSON.parse(localStorage.getItem('wnt_arts')) || defaultArts;
+        let upcomingReleases = JSON.parse(localStorage.getItem('wnt_upcoming')) || defaultUpcoming;
 
         const musicContainer = document.getElementById('musicContainer');
         const featuredBlogContainer = document.getElementById('featuredBlogContainer');
@@ -984,7 +998,10 @@
                 "yt-watch": "Смотреть на YT",
                 "yt-sub": "Смотрите музыкальные клипы, блоги и новые амбиент треки прямо на моём официальном YouTube канале!",
                 "yt-open": "Открыть YouTube",
-                "yt-title": "Смотрите новые видео"
+                "yt-title": "Смотрите новые видео",
+                "expected-label": "Ожидается:",
+                "upcoming-badge": "Вскоре",
+                "status-upcoming": "Статус: Ожидается"
             },
             ua: {
                 "title": "wntfixall | Музичне Лігво",
@@ -1027,9 +1044,12 @@
                 "drawn-by": "Малював художник:",
                 "prompt-label": "Промпт:",
                 "yt-watch": "Дивитись на YT",
-                "yt-sub": "Дивіться музичні кліпи, блоги та нові ембієнт треки прямо на моєму офіційному YouTube каналі!",
+                "yt-sub": "Дивіться музичні кліпи, блоги та нові емібєнт треки прямо на моєму офіційному YouTube каналі!",
                 "yt-open": "Відкрити YouTube",
-                "yt-title": "Дивіться нові відео"
+                "yt-title": "Дивіться нові відео",
+                "expected-label": "Очікується:",
+                "upcoming-badge": "Незабаром",
+                "status-upcoming": "Статус: Очікується"
             },
             en: {
                 "title": "wntfixall | Music Den",
@@ -1074,7 +1094,10 @@
                 "yt-watch": "Watch on YT",
                 "yt-sub": "Watch music videos, blogs, and new ambient tracks directly on my official YouTube channel!",
                 "yt-open": "Open YouTube",
-                "yt-title": "Watch new videos"
+                "yt-title": "Watch new videos",
+                "expected-label": "Expected:",
+                "upcoming-badge": "Soon",
+                "status-upcoming": "Status: Expected"
             }
         };
 
@@ -1296,6 +1319,7 @@
                     if (importedData.blogPosts) { blogPosts = importedData.blogPosts; localStorage.setItem('wnt_blog', JSON.stringify(blogPosts)); }
                     if (importedData.aiWorks) { aiWorks = importedData.aiWorks; localStorage.setItem('wnt_ai', JSON.stringify(aiWorks)); }
                     if (importedData.artWorks) { artWorks = importedData.artWorks; localStorage.setItem('wnt_arts', JSON.stringify(artWorks)); }
+                    if (importedData.upcomingReleases) { upcomingReleases = importedData.upcomingReleases; localStorage.setItem('wnt_upcoming', JSON.stringify(upcomingReleases)); }
                     
                     console.log("Данные успешно подгружены из data.json!");
                 }
@@ -1306,7 +1330,6 @@
         }
 
         // ПАРСЕР ПОСЛЕДНЕГО ВИДЕО С YOUTUBE
-        // ИСПРАВЛЕНО: Теперь напрямую встраивается через домен youtube-nocookie.com, который гарантирует проигрывание без CORS и ошибки 153!
         async function loadLatestYouTubeVideo() {
             const youtubeContainer = document.getElementById('youtubeContainer');
             if (!youtubeContainer) return;
@@ -1333,15 +1356,47 @@
             `;
         }
 
+        function openUpcomingDetails(index) {
+            const item = upcomingReleases[index];
+            const modalBody = document.getElementById('albumModalBody');
+            modalBody.innerHTML = `
+                <div style="display:flex; gap:25px; align-items:center; margin-bottom:25px; border-bottom:1px solid rgba(255, 176, 0, 0.25); padding-bottom:20px; flex-wrap:wrap;">
+                    <div style="width:120px; height:120px; border-radius:16px; overflow:hidden; background:#140e0e; border:1px solid var(--term-amber); display:flex; align-items:center; justify-content:center; font-size:35px; color:#ff4500;"><img src="${item.cover || 'photo_2026-05-18_09-49-03.jpg'}" alt="${item.title}" onerror="this.src='photo_2026-05-18_09-49-03.jpg'" style="width:100%; height:100%; object-fit:cover;"></div>
+                    <div><span style="font-size:12px; text-transform:uppercase; font-weight:700; color:var(--term-amber); background:rgba(255, 176, 0, 0.1); padding:4px 8px; border-radius:6px;">${item.type} [${translations[currentLang]['upcoming-badge']}]</span><h2 style="font-family:'Outfit'; font-size:28px; font-weight:800; margin-top:5px; margin-bottom:2px;">${item.title}</h2><span style="color:var(--term-amber); font-size:14px; font-weight:500;">${translations[currentLang]['expected-label']} ${item.expectedDate}</span></div>
+                </div>
+                <p style="color:#cbd5e1; line-height:1.6; font-size:16px; margin-bottom:25px; background:rgba(255,255,255,0.01); padding:15px; border-radius:12px;">${item.description || translations[currentLang]['no-desc']}</p>
+                <div style="font-size: 13px; color: var(--term-amber); font-weight: bold; text-align: center; border: 1px dashed rgba(255, 176, 0, 0.3); padding: 10px; border-radius: 8px; text-transform: uppercase;">${translations[currentLang]['status-upcoming']}</div>
+            `;
+            openModal('albumModal');
+        }
+
         function renderAll() {
             musicContainer.innerHTML = ''; featuredBlogContainer.innerHTML = ''; fullBlogContainer.innerHTML = ''; aiContainer.innerHTML = ''; artsContainer.innerHTML = ''; featuredAiContainer.innerHTML = '';
 
-            // Релизы
-            if (albums.length === 0) {
+            // Релизы (Объединенная секция: Предстоящие выходят в первую очередь!)
+            if (albums.length === 0 && upcomingReleases.length === 0) {
                 musicContainer.innerHTML = `<div class="empty-slider-state">${translations[currentLang]['empty-releases']}</div>`;
                 document.querySelector('.slider-controls').style.display = 'none';
             } else {
                 document.querySelector('.slider-controls').style.display = 'flex';
+                
+                // 1. Отрисовка предстоящих релизов (Upcoming) в первую очередь с золотистым пунктиром
+                upcomingReleases.forEach((item, index) => {
+                    const coverImg = item.cover || 'photo_2026-05-18_09-49-03.jpg';
+                    musicContainer.innerHTML += `
+                        <div class="album-card upcoming" onclick="openUpcomingDetails(${index})">
+                            <div class="album-cover" style="border-bottom: 1px dashed rgba(255, 176, 0, 0.3);">
+                                <span class="album-badge upcoming-badge">${item.type}</span>
+                                <img src="${coverImg}" alt="${item.title}" onerror="this.src='photo_2026-05-18_09-49-03.jpg'">
+                            </div>
+                            <div class="album-info">
+                                <div class="album-title" style="color: #fff;">${item.title}</div>
+                                <div class="album-year" style="color: var(--term-amber); font-weight: 700;">${translations[currentLang]['expected-label']} ${item.expectedDate}</div>
+                            </div>
+                        </div>`;
+                });
+
+                // 2. Отрисовка уже вышедших альбомов
                 albums.forEach((album, index) => {
                     musicContainer.innerHTML += `
                         <div class="album-card" onclick="openAlbumDetails(${index})">
@@ -1454,7 +1509,7 @@
         let currentTranslate = 0; let maxTranslate = 0;
         function setupSliderLogic() {
             const track = document.getElementById('musicContainer'); const sliderOuter = document.getElementById('sliderOuter');
-            if (!track || !sliderOuter || albums.length === 0) return;
+            if (!track || !sliderOuter || (albums.length === 0 && upcomingReleases.length === 0)) return;
             const step = 338; 
             const updateMaxTranslate = () => { maxTranslate = Math.min(0, sliderOuter.querySelector('.slider-container').offsetWidth - track.scrollWidth - 10); };
             updateMaxTranslate(); window.addEventListener('resize', updateMaxTranslate);
