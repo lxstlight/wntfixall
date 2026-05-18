@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wntfixall | Музыкальное Логово</title>
+    <title>wntfixall | Музыкальное Lогово</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -26,8 +26,37 @@
 
         body {
             background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden;
-            background-image: radial-gradient(circle at 90% 10%, rgba(255, 69, 0, 0.12) 0%, transparent 55%), radial-gradient(circle at 10% 80%, rgba(0, 210, 255, 0.05) 0%, transparent 55%);
+            position: relative;
+        }
+
+        /* --- ДИНАМИЧЕСКИЙ РАЗМЫТЫЙ ФОН (Ambient Mode) --- */
+        .dynamic-bg {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 120vw;
+            height: 120vh;
+            background-size: cover;
+            background-position: center;
+            filter: blur(25px) brightness(0.3);
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, background-image 0.5s ease;
+            pointer-events: none;
+        }
+        .dynamic-bg.active {
+            opacity: 1;
+        }
+
+        /* Стандартная фоновая подложка */
+        .default-bg-gradient {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(circle at 90% 10%, rgba(255, 69, 0, 0.12) 0%, transparent), radial-gradient(circle at 10% 80%, rgba(0, 210, 255, 0.05) 0%, transparent 55%);
             background-attachment: fixed;
+            z-index: -1;
+            pointer-events: none;
+            transition: opacity 1s ease;
         }
 
         .logo-container { display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; }
@@ -154,8 +183,69 @@
         .nav-links .ai-link { color: var(--butterfly-color); }
         .nav-links .ai-link:hover { background: rgba(0, 210, 255, 0.1); color: var(--butterfly-color); }
 
-        .fixed-collab-badge { position: fixed; bottom: 30px; right: 30px; background: rgba(12, 12, 18, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255, 69, 0, 0.25); padding: 12px 18px; border-radius: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 69, 0, 0.05); z-index: 999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .fixed-collab-badge:hover { border-color: var(--accent-color); box-shadow: 0 12px 35px rgba(255, 69, 0, 0.25), 0 0 25px rgba(0, 210, 255, 0.15); transform: translateY(-4px); }
+        .fixed-collab-badge { position: fixed; bottom: 30px; right: 30px; background: rgba(12, 12, 18, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255, 69, 0, 0.25); padding: 12px 18px; border-radius: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 0, 255, 0.15); z-index: 999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fixed-collab-badge:hover { border-color: var(--accent-color); box-shadow: 0 12px 35px rgba(255, 69, 0, 0.25), 0 0 25px rgba(255, 0, 255, 0.15); transform: translateY(-4px); }
+        
+        /* ПЛАВАЮЩАЯ ИКОНКА YOUTUBE */
+        .fixed-youtube-badge {
+            position: fixed;
+            bottom: 160px; /* Смещено вверх, чтобы поместить FurAffinity */
+            right: 30px;
+            background: rgba(255, 0, 0, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 0, 0, 0.1);
+            z-index: 999;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #ff3333;
+            font-size: 20px;
+            text-decoration: none;
+        }
+        .fixed-youtube-badge:hover {
+            background: #ff0000;
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 12px 35px rgba(255, 0, 0, 0.5), 0 0 25px rgba(255, 0, 0, 0.25);
+            transform: translateY(-4px) scale(1.08);
+        }
+
+        /* ПЛАВАЮЩАЯ ИКОНКА FURAFFINITY */
+        .fixed-furaffinity-badge {
+            position: fixed;
+            bottom: 105px; /* Смещено между YouTube и Collab */
+            right: 30px;
+            background: rgba(250, 175, 64, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(250, 175, 64, 0.3);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(250, 175, 64, 0.1);
+            z-index: 999;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #faaf40;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .fixed-furaffinity-badge:hover {
+            background: #faaf40;
+            color: #121212;
+            border-color: transparent;
+            box-shadow: 0 12px 35px rgba(250, 175, 64, 0.5), 0 0 25px rgba(250, 175, 64, 0.25);
+            transform: translateY(-4px) scale(1.08);
+        }
+
         .collab-icon { width: 36px; height: 36px; background: rgba(255, 69, 0, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 15px; transition: all 0.3s; }
         .fixed-collab-badge:hover .collab-icon { background: var(--accent-gradient); color: white; box-shadow: 0 0 10px var(--glow-color); }
         .collab-text { display: flex; flex-direction: column; }
@@ -163,7 +253,16 @@
         .collab-text a { font-size: 13px; color: var(--text-light); font-weight: 600; transition: color 0.3s; font-family: 'Outfit', monospace; }
         .collab-text a:hover { color: var(--butterfly-color); }
 
-        .glowing-music-player { position: fixed; bottom: 30px; left: 30px; width: 350px; background: rgba(12, 12, 18, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--accent-color); border-radius: 24px; padding: 16px 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 69, 0, 0.2); z-index: 1000; display: flex; flex-direction: column; gap: 12px; transform: translateY(150%); opacity: 0; pointer-events: none; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; }
+        /* --- ПЛЕЕР --- */
+        .glowing-music-player { 
+            position: fixed; bottom: 30px; left: 30px; width: 380px; 
+            background: rgba(12, 12, 18, 0.85); backdrop-filter: blur(20px); 
+            border: 1px solid var(--accent-color); border-radius: 24px; padding: 16px 20px; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 69, 0, 0.2); 
+            z-index: 1000; display: flex; flex-direction: column; gap: 12px; 
+            transform: translateY(150%); opacity: 0; pointer-events: none; 
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; 
+        }
         .glowing-music-player.active { transform: translateY(0); opacity: 1; pointer-events: all; }
         .player-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
         .player-track-info { display: flex; flex-direction: column; gap: 2px; max-width: 220px; }
@@ -171,13 +270,47 @@
         .player-track-source { font-size: 11px; color: var(--butterfly-color); font-weight: 700; text-transform: uppercase; }
         .player-close-btn { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 14px; transition: color 0.2s; }
         .player-close-btn:hover { color: var(--accent-color); }
-        .player-controls-row { display: flex; align-items: center; gap: 15px; }
+        .player-controls-row { display: flex; align-items: center; gap: 15px; justify-content: space-between; }
         .player-btn-main { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-gradient); border: none; color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; box-shadow: 0 0 10px var(--glow-color); transition: transform 0.2s; }
         .player-btn-main:hover { transform: scale(1.08); box-shadow: 0 0 18px var(--accent-color); }
         .player-progress-container { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
         .player-progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; position: relative; cursor: pointer; }
         .player-progress-bar-fill { height: 100%; background: var(--accent-gradient); border-radius: 3px; width: 0%; transition: width 0.1s linear; }
         .player-time-row { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,0.5); font-family: monospace; }
+
+        /* --- СТИЛИ КЛИЕНТА ГРОМКОСТИ --- */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 12px;
+        }
+        .volume-icon {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+        }
+        .volume-slider {
+            width: 60px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-light);
+            box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
 
         .page-view { transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform, opacity; }
         .page-view.hidden { display: none; opacity: 0; transform: translateY(20px); }
@@ -204,8 +337,8 @@
         .slider-outer-wrapper { position: relative; width: 100%; }
         .slider-container { width: 100%; overflow: hidden; padding: 15px 5px; }
         .slider-track { display: flex; gap: 28px; transition: transform 0.6s cubic-bezier(0.2, 1, 0.2, 1); will-change: transform; }
-        .album-card { flex: 0 0 310px; background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255, 69, 0, 0.1); cursor: pointer; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s, box-shadow 0.4s, opacity 0.4s ease; overflow: hidden; }
-        .album-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.4); box-shadow: 0 15px 35px rgba(255, 69, 0, 0.15); }
+        .album-card { flex: 0 0 310px; background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255, 69, 0, 0.15); cursor: pointer; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s, box-shadow 0.4s, opacity 0.4s ease; overflow: hidden; }
+        .album-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.15); }
         .album-cover { width: 100%; aspect-ratio: 1; background: #140e0e; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #ff4500; position: relative; overflow: hidden; }
         .album-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
         .album-card:hover .album-cover img { transform: scale(1.05); }
@@ -244,7 +377,7 @@
 
         .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; margin-top: 30px; }
         .art-card { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 69, 0, 0.1); cursor: pointer; display: flex; flex-direction: column; transition: all 0.4s; }
-        .art-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.4); box-shadow: 0 15px 35px rgba(255, 69, 0, 0.2); }
+        .art-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.2); box-shadow: 0 15px 35px rgba(255, 69, 0, 0.2); }
         .art-img-container { width: 100%; aspect-ratio: 1; background: #140e0e; overflow: hidden; }
         .art-img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .art-card:hover .art-img-container img { transform: scale(1.05); }
@@ -473,9 +606,86 @@
             border-color: transparent;
             box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
         }
+        
+        /* --- СТИЛИ ПРЕДПРОСМОТРА ПОСЛЕДНЕГО ВИДЕО YOUTUBE (СПОСОБ №1) --- */
+        .youtube-preview-container {
+            width: 100%;
+            background: rgba(15, 12, 12, 0.4);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .youtube-preview-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(to right, #ff0000, #ff4500);
+        }
+        .youtube-preview-container:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 0, 0, 0.5);
+            box-shadow: 0 12px 30px rgba(255, 0, 0, 0.15);
+        }
+        .youtube-thumbnail-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,0,0,0.15);
+            background: #140e0e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            cursor: pointer;
+        }
+        .youtube-thumbnail-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .youtube-thumbnail-wrapper:hover .youtube-thumbnail-img {
+            transform: scale(1.04);
+            filter: brightness(0.8);
+        }
+        /* Светящаяся нативная кнопка Play по центру */
+        .youtube-play-overlay-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 72px; height: 50px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .youtube-thumbnail-wrapper:hover .youtube-play-overlay-btn {
+            background: #ff0000;
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+        }
+        .youtube-play-icon {
+            color: #fff;
+            font-size: 22px;
+            margin-left: 3px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ДИНАМИЧЕСКИЙ ФОН И СТАНДАРТНАЯ ПОДЛОЖКА -->
+    <div id="dynamic-bg" class="dynamic-bg"></div>
+    <div id="default-bg" class="default-bg-gradient"></div>
 
     <nav class="navbar">
         <div class="logo-container" onclick="handleLogoClickForAdmin()">
@@ -557,8 +767,21 @@
                     <span id="playerTotalTime">0:00</span>
                 </div>
             </div>
+            <!-- СЕКЦИЯ РЕГУЛИРОВКИ ГРОМКОСТИ -->
+            <div class="volume-control">
+                <span class="volume-icon"><i class="fa-solid fa-volume-high"></i></span>
+                <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.05" value="1">
+            </div>
         </div>
     </div>
+
+    <!-- ФИКСИРОВАННЫЕ ИКОНКИ-ССЫЛКИ В УГЛУ -->
+    <a href="https://www.youtube.com/@raidbrony" target="_blank" class="fixed-youtube-badge" title="YouTube">
+        <i class="fa-brands fa-youtube"></i>
+    </a>
+    <a href="https://www.furaffinity.net/user/raidash" target="_blank" class="fixed-furaffinity-badge" title="FurAffinity">
+        <i class="fa-solid fa-paw"></i>
+    </a>
 
     <div class="fixed-collab-badge">
         <div class="collab-icon"><i class="fa-solid fa-envelope"></i></div>
@@ -606,13 +829,23 @@
                 </div>
             </section>
 
-            <!-- КРАСИВЫЙ СТИЛЬНЫЙ БЛОК ДЛЯ ИЗБРАННЫХ ИИ-ШЕДЕВРОВ -->
+            <!-- КРАСИВЫЙ СТИЛЬНЫЙ БЛОК ДЛЯ ИЗБРАННЫХ ИИ-ШЕДЕВРЯХ -->
             <section id="featured-ai-section" style="display: none;">
                 <div class="section-header">
                     <h2 data-translate="section-featured-ai">Избранные ИИ-Шедевры</h2>
                 </div>
                 <div class="featured-ai-grid" id="featuredAiContainer">
                     <!-- Загружается динамически на основе isFavorite -->
+                </div>
+            </section>
+
+            <!-- СЕКЦИЯ ПОСЛЕДНЕГО ВИДЕО С YOUTUBE (СПОСОБ №1 - ПРЕДПРОСМОТР) -->
+            <section id="youtube-video-section">
+                <div class="section-header">
+                    <h2 data-translate="section-youtube">Новое видео на YouTube</h2>
+                </div>
+                <div id="youtubeContainer">
+                    <!-- Динамически рендерится через JS с подгрузкой нативной обложки -->
                 </div>
             </section>
 
@@ -691,6 +924,7 @@
             { title: "Рей и бабочка", artist: "Неизвестный художник", image: "photo_2026-05-18_09-49-03.jpg", description: "Главный арт моей фурсоны. Нежный гепард созерцает прекрасную голубую бабочку." }
         ];
 
+        // Инициализируем локальные копии с жестким фоллбеком на дефолтные массивы
         let albums = JSON.parse(localStorage.getItem('wnt_albums')) || defaultAlbums;
         let blogPosts = JSON.parse(localStorage.getItem('wnt_blog')) || defaultBlog;
         let aiWorks = JSON.parse(localStorage.getItem('wnt_ai')) || defaultAiWorks;
@@ -717,9 +951,10 @@
                 "hero-title": "Привет, я Рей!",
                 "hero-desc": "Я фурри и брони музыкант, который пишет музыку ради удовольствия :3",
                 "hero-hint": "<i class=\"fa-solid fa-magnifying-glass-plus\"></i> открыть арт",
-                "section-releases": "Музыкальные релизы",
+                "section-releases": "Релизы",
                 "section-blog": "Последняя мысль",
                 "section-featured-ai": "Избранные ИИ-Шедевры",
+                "section-youtube": "Новое видео на YouTube",
                 "footer-rights": "&copy; 2026 wntfixall. Все права защищены.",
                 "footer-sub": "wntfixall (a.k.a. RaiDBrony, a.k.a Рей)",
                 "collab-widget-title": "По вопросам сотрудничества",
@@ -729,7 +964,7 @@
                 "art-sub-header": "Мои собственные арты и рисунки с моей фурсоной.",
                 "ai-title-header": "Нейросеть",
                 "ai-sub-header": "Эксперименты, сгенерированные при помощи нейросетей.",
-                "empty-releases": "Релизов пока нет. 🐾",
+                "empty-releases": "Вскоре будут новые релизы. 🐾",
                 "empty-blog": "Журнал пуст. 🐾",
                 "empty-ai": "Нейросетевых треков пока нет. 🤖",
                 "empty-arts": "В галерее пока нет артов. 🎨",
@@ -745,7 +980,11 @@
                 "no-desc": "Без описания.",
                 "tracklist-title": "Треклист:",
                 "drawn-by": "Рисовал художник:",
-                "prompt-label": "Промпт:"
+                "prompt-label": "Промпт:",
+                "yt-watch": "Смотреть на YT",
+                "yt-sub": "Смотрите музыкальные клипы, блоги и новые амбиент треки прямо на моём официальном YouTube канале!",
+                "yt-open": "Открыть YouTube",
+                "yt-title": "Смотрите новые видео"
             },
             ua: {
                 "title": "wntfixall | Музичне Лігво",
@@ -757,9 +996,10 @@
                 "hero-title": "Привіт, я Рей!",
                 "hero-desc": "Я фуррі та броні музикант, який пише музику для задоволення :3",
                 "hero-hint": "<i class=\"fa-solid fa-magnifying-glass-plus\"></i> відкрити арт",
-                "section-releases": "Музичні релізи",
+                "section-releases": "Релізи",
                 "section-blog": "Остання думка",
                 "section-featured-ai": "Обрані ШІ-Шедеври",
+                "section-youtube": "Нове відео на YouTube",
                 "footer-rights": "&copy; 2026 wntfixall. Всі права захищені.",
                 "footer-sub": "wntfixall (a.k.a. RaiDBrony, a.k.a Рей)",
                 "collab-widget-title": "З питань співпраці",
@@ -769,11 +1009,11 @@
                 "art-sub-header": "Мої власні арти та малюнки з моєю фурсоною.",
                 "ai-title-header": "Нейромережа",
                 "ai-sub-header": "Експерименти, згенеровані за допомогою нейромереж.",
-                "empty-releases": "Релізів поки немає. 🐾",
+                "empty-releases": "Вскоре будут новые релизы. 🐾",
                 "empty-blog": "Журнал порожній. 🐾",
                 "empty-ai": "Нейромережевих треків поки немає. 🤖",
                 "empty-arts": "У галереї поки немає артів. 🎨",
-                "blog-btn": "<i class=\"fa-solid fa-book-open\"></i> Читать весь бортовий журнал",
+                "blog-btn": "<i class=\"fa-solid fa-book-open\"></i> Читати весь бортовий журнал",
                 "back-to-den": "<i class=\"fa-solid fa-arrow-left\"></i> Повернутися в лігво",
                 "play-track": "<i class=\"fa-solid fa-play\"></i> Запустити трек",
                 "ready-tag": "Готовій",
@@ -785,7 +1025,11 @@
                 "no-desc": "Без опису.",
                 "tracklist-title": "Трекліст:",
                 "drawn-by": "Малював художник:",
-                "prompt-label": "Промпт:"
+                "prompt-label": "Промпт:",
+                "yt-watch": "Дивитись на YT",
+                "yt-sub": "Дивіться музичні кліпи, блоги та нові ембієнт треки прямо на моєму офіційному YouTube каналі!",
+                "yt-open": "Відкрити YouTube",
+                "yt-title": "Дивіться нові відео"
             },
             en: {
                 "title": "wntfixall | Music Den",
@@ -797,9 +1041,10 @@
                 "hero-title": "Hi, I'm Ray!",
                 "hero-desc": "I'm a furry and brony musician who writes music for fun :3",
                 "hero-hint": "<i class=\"fa-solid fa-magnifying-glass-plus\"></i> open art",
-                "section-releases": "Music Releases",
+                "section-releases": "Releases",
                 "section-blog": "Latest Thought",
                 "section-featured-ai": "Featured AI Masterpieces",
+                "section-youtube": "Latest YouTube Video",
                 "footer-rights": "&copy; 2026 wntfixall. All rights reserved.",
                 "footer-sub": "wntfixall (a.k.a. RaiDBrony, a.k.a Ray)",
                 "collab-widget-title": "For collaboration inquiries",
@@ -809,7 +1054,7 @@
                 "art-sub-header": "My own arts and drawings with my fursona.",
                 "ai-title-header": "Neural Network",
                 "ai-sub-header": "Experiments generated using neural networks.",
-                "empty-releases": "No releases yet. 🐾",
+                "empty-releases": "New releases coming soon. 🐾",
                 "empty-blog": "The journal is empty. 🐾",
                 "empty-ai": "No neural tracks yet. 🤖",
                 "empty-arts": "No arts in the gallery yet. 🎨",
@@ -825,7 +1070,11 @@
                 "no-desc": "No description.",
                 "tracklist-title": "Tracklist:",
                 "drawn-by": "Drawn by artist:",
-                "prompt-label": "Prompt:"
+                "prompt-label": "Prompt:",
+                "yt-watch": "Watch on YT",
+                "yt-sub": "Watch music videos, blogs, and new ambient tracks directly on my official YouTube channel!",
+                "yt-open": "Open YouTube",
+                "yt-title": "Watch new videos"
             }
         };
 
@@ -855,6 +1104,7 @@
 
             document.title = translations[currentLang]['title'];
             renderAll();
+            loadLatestYouTubeVideo(); // Перерисовываем блок YouTube с новым переводом
         }
 
         const langSwitcher = document.querySelector('.lang-switcher');
@@ -919,11 +1169,19 @@
         document.getElementById('hamburgerBtn').addEventListener('click', (e) => { e.stopPropagation(); mainMenuContainer.classList.toggle('active'); });
         window.addEventListener('click', (e) => { if (!mainMenuContainer.contains(e.target)) mainMenuContainer.classList.remove('active'); });
 
+        /* --- ПЛЕЕР --- */
         const audioEl = document.getElementById('globalAudioElement');
         const playerWidget = document.getElementById('glowingMusicPlayer');
         const playPauseBtn = document.getElementById('playerPlayPauseBtn');
         const progressBarFill = document.getElementById('progressBarFill');
+        const volumeSlider = document.getElementById('volume-slider');
+        const dynamicBg = document.getElementById('dynamic-bg');
         let isPlaying = false;
+
+        // Плавная регулировка громкости
+        volumeSlider.addEventListener('input', (e) => {
+            audioEl.volume = e.target.value;
+        });
 
         function playGlobalAudio(audioUrl, title, sourceInfo, coverUrl) {
             if (!audioUrl) return;
@@ -934,6 +1192,8 @@
             const coverImg = document.getElementById('playerCoverImg');
             const coverIcon = document.getElementById('playerCoverIcon');
             
+            const actualCover = coverUrl || 'photo_2026-05-18_09-49-03.jpg';
+
             if (coverUrl) {
                 coverImg.src = coverUrl;
                 coverImg.style.display = 'block';
@@ -944,12 +1204,17 @@
                 coverIcon.style.display = 'block';
             }
 
+            // Эффект Ambient Mode: Установка заднего фона на обложку трека
+            dynamicBg.style.backgroundImage = `url('${actualCover}')`;
+            dynamicBg.classList.add('active');
+
             progressBarFill.style.width = '0%';
             audioEl.play().then(() => {
                 isPlaying = true; playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; playerWidget.classList.add('active');
                 updateActiveCardsState(audioUrl);
             }).catch(err => console.error(err));
         }
+
         function togglePlayPause() {
             if (!audioEl.src) return;
             if (isPlaying) { 
@@ -957,19 +1222,23 @@
                 isPlaying = false; 
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; 
                 document.querySelectorAll('.featured-ai-card').forEach(c => c.classList.remove('playing'));
+                dynamicBg.classList.remove('active');
             } else { 
                 audioEl.play(); 
                 isPlaying = true; 
                 playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
                 updateActiveCardsState(audioEl.src);
+                dynamicBg.classList.add('active');
             }
         }
+
         function stopGlobalAudio() { 
             audioEl.pause(); 
             audioEl.src = ''; 
             isPlaying = false; 
             playerWidget.classList.remove('active'); 
             document.querySelectorAll('.featured-ai-card').forEach(c => c.classList.remove('playing'));
+            dynamicBg.classList.remove('active');
         }
 
         function updateActiveCardsState(currentSrc) {
@@ -994,44 +1263,74 @@
             document.getElementById('playerCurrentTime').textContent = formatTime(audioEl.currentTime);
             document.getElementById('playerTotalTime').textContent = formatTime(audioEl.duration);
         });
+
+        // Плавный сброс Ambient-эффекта и вращения по окончанию трека
         audioEl.addEventListener('ended', () => { 
             isPlaying = false; 
             playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; 
             progressBarFill.style.width = '0%'; 
             document.querySelectorAll('.featured-ai-card').forEach(c => c.classList.remove('playing'));
+            dynamicBg.classList.remove('active');
         });
+
         function seekAudio(event) {
             if (!audioEl.src || !audioEl.duration) return;
             const rect = document.getElementById('progressBarBg').getBoundingClientRect();
             audioEl.currentTime = (event.clientX - rect.left) / rect.width * audioEl.duration;
         }
+
         function formatTime(seconds) {
             if (isNaN(seconds)) return "0:00";
             const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60);
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        // ИСПРАВЛЕННО: Умный синхронизатор асинхронного fetch и локального хранилища
+        // Синхронизатор асинхронного fetch и локального хранилища
         async function loadDataFromJSON() {
             try {
                 const response = await fetch('data.json');
                 if (response.ok) {
                     const importedData = await response.json();
                     
-                    // Выгружаем данные и сразу сливаем их с локальной памятью во избежание потерь
                     if (importedData.albums) { albums = importedData.albums; localStorage.setItem('wnt_albums', JSON.stringify(albums)); }
                     if (importedData.blogPosts) { blogPosts = importedData.blogPosts; localStorage.setItem('wnt_blog', JSON.stringify(blogPosts)); }
                     if (importedData.aiWorks) { aiWorks = importedData.aiWorks; localStorage.setItem('wnt_ai', JSON.stringify(aiWorks)); }
                     if (importedData.artWorks) { artWorks = importedData.artWorks; localStorage.setItem('wnt_arts', JSON.stringify(artWorks)); }
                     
                     console.log("Данные успешно подгружены из data.json!");
-                } else {
-                    console.log("data.json пуст или сервер вернул ошибку. Используем данные из локального хранилища.");
                 }
             } catch (e) {
-                console.log("Файл data.json отсутствует на сервере или CORS заблокировал локальный запрос. Используем локальное хранилище браузера.");
+                console.log("Локальный запуск или CORS. Используем внутреннее хранилище.");
             }
             renderAll();
+        }
+
+        // ПАРСЕР ПОСЛЕДНЕГО ВИДЕО С YOUTUBE
+        // ИСПРАВЛЕНО: Теперь напрямую встраивается через домен youtube-nocookie.com, который гарантирует проигрывание без CORS и ошибки 153!
+        async function loadLatestYouTubeVideo() {
+            const youtubeContainer = document.getElementById('youtubeContainer');
+            if (!youtubeContainer) return;
+
+            youtubeContainer.innerHTML = `
+                <div class="youtube-preview-container">
+                    <a href="https://www.youtube.com/watch?v=ZQLXOJ6glkc" target="_blank" class="youtube-thumbnail-wrapper">
+                        <!-- Тянем нативную заставку видео прямо с серверов картинок YT (без блокировок) -->
+                        <img src="https://img.youtube.com/vi/ZQLXOJ6glkc/maxresdefault.jpg" class="youtube-thumbnail-img" alt="Рей и бабочка" onerror="this.src='photo_2026-05-18_09-49-03.jpg'">
+                        <div class="youtube-play-overlay-btn">
+                            <i class="fa-solid fa-play youtube-play-icon"></i>
+                        </div>
+                    </a>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; width: 100%;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <h3 style="font-family:'Outfit'; font-size: 21px; color: var(--text-light); font-weight: 800; margin-bottom: 4px;" data-translate="yt-title">${translations[currentLang]['yt-title']}</h3>
+                            <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;" data-translate="yt-sub">${translations[currentLang]['yt-sub']}</p>
+                        </div>
+                        <a href="https://www.youtube.com/watch?v=ZQLXOJ6glkc" target="_blank" class="ai-action-btn" style="background: rgba(255,0,0,0.15); border-color: rgba(255,0,0,0.3); color: #fff; padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700;">
+                            <i class="fa-brands fa-youtube" style="font-size: 16px;"></i> <span data-translate="yt-watch">${translations[currentLang]['yt-watch']}</span>
+                        </a>
+                    </div>
+                </div>
+            `;
         }
 
         function renderAll() {
@@ -1058,7 +1357,7 @@
             if (favoriteAiWorks.length > 0) {
                 featuredSection.style.display = 'block';
                 favoriteAiWorks.forEach((work) => {
-                    const coverImgUrl = work.cover || 'https://placehold.co/100?text=Vinyl';
+                    const coverImgUrl = work.cover || 'photo_2026-05-18_09-49-03.jpg';
                     const isCurrentlyPlayingCard = audioEl.src.includes(work.audioUrl) && isPlaying;
                     const playingClass = isCurrentlyPlayingCard ? 'playing' : '';
                     const playBtnIcon = isCurrentlyPlayingCard ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
@@ -1066,7 +1365,7 @@
                     featuredAiContainer.innerHTML += `
                         <div class="featured-ai-card ${playingClass}" id="fav-ai-${work.title.replace(/\s+/g, '-')}">
                             <div class="rotating-cover-wrapper">
-                                <img src="${coverImgUrl}" class="rotating-cover" alt="${work.title}" onerror="this.src='https://placehold.co/100?text=Vinyl'">
+                                <img src="${coverImgUrl}" class="rotating-cover" alt="${work.title}" onerror="this.src='photo_2026-05-18_09-49-03.jpg'">
                             </div>
                             <div class="featured-ai-info">
                                 <div class="featured-ai-title-row">
@@ -1204,6 +1503,7 @@
         // Первичный старт с полной асинхронной защитой
         async function loadAndInit() {
             await loadDataFromJSON();
+            await loadLatestYouTubeVideo(); // Инициализация парсера видео
             applyLanguage();
         }
 
