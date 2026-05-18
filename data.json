@@ -14,6 +14,15 @@
   ],
   "aiWorks": [
     {
+      "title": "Неоновый город (feat. LegitPlayer)",
+      "model": "Suno v4",
+      "cover": "",
+      "audioUrl": "neiromusic/Неоновый город.mp3",
+      "prompt": "midwest emo",
+      "description": "Один из самых лучших треков, сделанных совместно с LegitPlayer.",
+      "isFavorite": true
+    },
+    {
       "title": "Эгоист",
       "model": "Suno v5",
       "cover": "",
