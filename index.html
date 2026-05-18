@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wntfixall | Музыкальное Логово</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #08080c;
+            --card-bg: rgba(20, 15, 15, 0.6);
+            --accent-color: #ff4500;      
+            --accent-gradient: linear-gradient(135deg, #ff4500, #ff8c00);
+            --butterfly-color: #00d2ff;   
+            --glow-color: rgba(255, 69, 0, 0.4);
+            --text-color: #ffd0b3;        
+            --text-light: #f8fafc;
+            --blur-menu: rgba(8, 8, 12, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden;
+            background-image: radial-gradient(circle at 90% 10%, rgba(255, 69, 0, 0.12) 0%, transparent 55%), radial-gradient(circle at 10% 80%, rgba(0, 210, 255, 0.05) 0%, transparent 55%);
+            background-attachment: fixed;
+        }
+
+        .logo-container { display: flex; align-items: center; justify-content: center; cursor: pointer; user-select: none; }
+        .logo-svg { width: 46px; height: 46px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s; filter: drop-shadow(0 0 4px var(--glow-color)); }
+        .logo-container:hover .logo-svg { transform: rotate(-10deg) scale(1.15); filter: drop-shadow(0 0 12px #ff4500); }
+
+        .hero-logo-backdrop { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px; z-index: -1; opacity: 0.25; pointer-events: none; animation: logoPulse 5s ease-in-out infinite alternate; }
+        @keyframes logoPulse {
+            0% { transform: translate(-50%, -51%) scale(1) rotate(0deg); filter: drop-shadow(0 0 10px rgba(255, 69, 0, 0.3)); }
+            100% { transform: translate(-50%, -49%) scale(1.06) rotate(3deg); filter: drop-shadow(0 0 25px rgba(255, 140, 0, 0.5)); }
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: var(--blur-menu); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 69, 0, 0.15); z-index: 1000; }
+        
+        .nav-right-actions { display: flex; align-items: center; gap: 15px; }
+
+        /* --- СТИЛИ ПЕРЕКЛЮЧАТЕЛЯ ЯЗЫКОВ --- */
+        .lang-switcher {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            z-index: 1015;
+        }
+        .lang-current {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-light);
+            padding: 8px 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .lang-switcher:hover .lang-current,
+        .lang-switcher.active .lang-current {
+            border-color: var(--accent-color);
+            background: rgba(255, 69, 0, 0.08);
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.2);
+        }
+        .lang-switcher:hover .lang-current i,
+        .lang-switcher.active .lang-current i {
+            transform: rotate(180deg);
+            color: var(--accent-color);
+        }
+        .lang-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 69, 0, 0.25);
+            border-radius: 12px;
+            padding: 6px;
+            width: 110px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .lang-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 25px;
+            background: transparent;
+        }
+
+        .lang-switcher:hover .lang-dropdown,
+        .lang-switcher.active .lang-dropdown {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0) scale(1);
+        }
+        .lang-dropdown li {
+            list-style: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .lang-dropdown li:hover {
+            background: rgba(255, 69, 0, 0.1);
+            color: var(--accent-color);
+        }
+        .flag-icon {
+            width: 18px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            display: inline-block;
+        }
+
+        .menu-container { position: relative; display: flex; align-items: center; }
+        .hamburger-btn { display: flex; flex-direction: column; gap: 5px; cursor: pointer; width: 44px; height: 44px; justify-content: center; align-items: center; border-radius: 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1010; }
+        .bar { width: 18px; height: 2px; background-color: var(--text-light); border-radius: 1px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .menu-container:hover .hamburger-btn, .menu-container.active .hamburger-btn { transform: rotate(90deg); border-color: var(--accent-color); background: rgba(255, 69, 0, 0.12); box-shadow: 0 0 15px var(--glow-color); }
+        .menu-container:hover .bar, .menu-container.active .bar { background-color: var(--accent-color); }
+
+        .nav-links { position: absolute; top: 55px; right: 0; display: flex; flex-direction: column; gap: 12px; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 69, 0, 0.25); padding: 20px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 69, 0, 0.1); opacity: 0; pointer-events: none; transform: translateY(-15px) scale(0.92); transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 240px; z-index: 1005; }
+        .nav-links::before { content: ''; position: absolute; top: -20px; left: 0; width: 100%; height: 25px; background: transparent; }
+        .menu-container:hover .nav-links, .menu-container.active .nav-links { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+        .nav-links li { list-style: none; width: 100%; }
+        .nav-links a { font-size: 15px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; opacity: 0.8; transition: all 0.3s; cursor: pointer; color: var(--text-light); }
+        .nav-links a:hover { opacity: 1; background: rgba(255, 69, 0, 0.1); color: var(--accent-color); transform: translateX(5px); }
+        .nav-links .ai-link { color: var(--butterfly-color); }
+        .nav-links .ai-link:hover { background: rgba(0, 210, 255, 0.1); color: var(--butterfly-color); }
+
+        .fixed-collab-badge { position: fixed; bottom: 30px; right: 30px; background: rgba(12, 12, 18, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255, 69, 0, 0.25); padding: 12px 18px; border-radius: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 69, 0, 0.05); z-index: 999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .fixed-collab-badge:hover { border-color: var(--accent-color); box-shadow: 0 12px 35px rgba(255, 69, 0, 0.25), 0 0 25px rgba(0, 210, 255, 0.15); transform: translateY(-4px); }
+        .collab-icon { width: 36px; height: 36px; background: rgba(255, 69, 0, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 15px; transition: all 0.3s; }
+        .fixed-collab-badge:hover .collab-icon { background: var(--accent-gradient); color: white; box-shadow: 0 0 10px var(--glow-color); }
+        .collab-text { display: flex; flex-direction: column; }
+        .collab-text span { font-size: 10px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
+        .collab-text a { font-size: 13px; color: var(--text-light); font-weight: 600; transition: color 0.3s; font-family: 'Outfit', monospace; }
+        .collab-text a:hover { color: var(--butterfly-color); }
+
+        .glowing-music-player { position: fixed; bottom: 30px; left: 30px; width: 350px; background: rgba(12, 12, 18, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--accent-color); border-radius: 24px; padding: 16px 20px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 69, 0, 0.2); z-index: 1000; display: flex; flex-direction: column; gap: 12px; transform: translateY(150%); opacity: 0; pointer-events: none; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease; }
+        .glowing-music-player.active { transform: translateY(0); opacity: 1; pointer-events: all; }
+        .player-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .player-track-info { display: flex; flex-direction: column; gap: 2px; max-width: 220px; }
+        .player-track-title { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-track-source { font-size: 11px; color: var(--butterfly-color); font-weight: 700; text-transform: uppercase; }
+        .player-close-btn { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 14px; transition: color 0.2s; }
+        .player-close-btn:hover { color: var(--accent-color); }
+        .player-controls-row { display: flex; align-items: center; gap: 15px; }
+        .player-btn-main { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-gradient); border: none; color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; box-shadow: 0 0 10px var(--glow-color); transition: transform 0.2s; }
+        .player-btn-main:hover { transform: scale(1.08); box-shadow: 0 0 18px var(--accent-color); }
+        .player-progress-container { flex-grow: 1; display: flex; flex-direction: column; gap: 4px; }
+        .player-progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; position: relative; cursor: pointer; }
+        .player-progress-bar-fill { height: 100%; background: var(--accent-gradient); border-radius: 3px; width: 0%; transition: width 0.1s linear; }
+        .player-time-row { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,0.5); font-family: monospace; }
+
+        .page-view { transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform, opacity; }
+        .page-view.hidden { display: none; opacity: 0; transform: translateY(20px); }
+
+        .hero { min-height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 60px; }
+        .avatar-container { position: relative; margin-bottom: 30px; cursor: pointer; }
+        .avatar-placeholder { width: 190px; height: 190px; border-radius: 48px; background: #181212; border: 3px solid #ff4500; box-shadow: 0 0 35px var(--glow-color), 0 0 15px rgba(0, 210, 255, 0.2); overflow: hidden; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease; }
+        .avatar-container:hover .avatar-placeholder { transform: scale(1.06) rotate(3deg); box-shadow: 0 0 45px rgba(255, 69, 0, 0.6), 0 0 25px rgba(0, 210, 255, 0.5); border-color: var(--butterfly-color); }
+        .avatar-placeholder img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .avatar-container:hover .avatar-placeholder img { transform: scale(1.03); }
+        .avatar-badge { position: absolute; bottom: -5px; right: -5px; background: var(--accent-gradient); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; box-shadow: 0 5px 15px rgba(255,69,0,0.4); transition: background 0.3s, transform 0.3s; }
+        .avatar-container:hover .avatar-badge { background: linear-gradient(135deg, var(--butterfly-color), #0088ff); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4); transform: scale(1.05); }
+        .hero h1 { font-family: 'Outfit', sans-serif; font-size: 42px; font-weight: 800; margin-bottom: 15px; }
+        .hero p { color: var(--text-color); font-size: 20px; max-width: 650px; line-height: 1.6; font-weight: 400; }
+        .avatar-hint { font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+        .avatar-container:hover .avatar-hint { color: var(--butterfly-color); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 100px; }
+        section { margin-bottom: 100px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        section h2 { font-family: 'Outfit', sans-serif; font-size: 34px; font-weight: 800; position: relative; }
+        section h2::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 45px; height: 4px; background: var(--accent-gradient); border-radius: 2px; }
+
+        .slider-outer-wrapper { position: relative; width: 100%; }
+        .slider-container { width: 100%; overflow: hidden; padding: 15px 5px; }
+        .slider-track { display: flex; gap: 28px; transition: transform 0.6s cubic-bezier(0.2, 1, 0.2, 1); will-change: transform; }
+        .album-card { flex: 0 0 310px; background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255, 69, 0, 0.1); cursor: pointer; transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s, box-shadow 0.4s, opacity 0.4s ease; overflow: hidden; }
+        .album-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.4); box-shadow: 0 15px 35px rgba(255, 69, 0, 0.15); }
+        .album-cover { width: 100%; aspect-ratio: 1; background: #140e0e; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #ff4500; position: relative; overflow: hidden; }
+        .album-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .album-card:hover .album-cover img { transform: scale(1.05); }
+        .album-badge { position: absolute; top: 15px; right: 15px; background: rgba(8, 8, 12, 0.85); backdrop-filter: blur(5px); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: var(--accent-color); border: 1px solid rgba(255, 69, 0, 0.2); }
+        .album-info { padding: 22px; }
+        .album-title { font-size: 19px; font-weight: 700; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .album-year { font-size: 14px; color: var(--text-color); font-weight: 500; }
+
+        .slider-controls { display: flex; gap: 12px; }
+        .slider-btn { width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 69, 0, 0.1); border: 1px solid rgba(255, 69, 0, 0.2); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.3s; }
+        .slider-btn:hover { background: var(--accent-gradient); border-color: transparent; box-shadow: 0 0 15px var(--glow-color); }
+        .slider-outer-wrapper.peek-next .slider-track { transform: translateX(var(--peek-next-offset)) !important; }
+        .slider-outer-wrapper.peek-prev .slider-track { transform: translateX(var(--peek-prev-offset)) !important; }
+        .slider-outer-wrapper.peek-next .album-card:not(.active-card-view), .slider-outer-wrapper.peek-prev .album-card:not(.active-card-view) { opacity: 0.6; }
+
+        .empty-slider-state { width: 100%; padding: 40px; text-align: center; background: rgba(255, 69, 0, 0.03); border: 2px dashed rgba(255, 69, 0, 0.25); border-radius: 24px; color: var(--text-color); font-size: 16px; line-height: 1.6; }
+
+        .blog-section-main { display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; }
+        .blog-card { background: var(--card-bg); padding: 35px; border-radius: 28px; border: 1px solid rgba(255, 69, 0, 0.08); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); width: 100%; max-width: 680px; position: relative; }
+        .blog-card.latest-focus { z-index: 10; border-color: rgba(255, 69, 0, 0.35); box-shadow: 0 20px 50px rgba(255, 69, 0, 0.12), 0 0 30px rgba(0, 210, 255, 0.05); }
+        .blog-card.latest-focus:hover { border-color: var(--accent-color); box-shadow: 0 25px 60px rgba(255, 69, 0, 0.2), 0 0 40px rgba(0, 210, 255, 0.1); transform: translateY(-5px); }
+        .blog-card.preview-depth { z-index: 5; margin-top: -45px; transform: scale(0.92); opacity: 0.35; filter: blur(1px); border-color: rgba(255, 69, 0, 0.1); cursor: pointer; }
+        .blog-card.preview-depth:hover { opacity: 0.65; filter: blur(0px); border-color: rgba(255, 69, 0, 0.25); }
+        .blog-date { font-size: 13px; color: var(--accent-color); margin-bottom: 12px; font-weight: 700; text-transform: uppercase; }
+        .blog-card h3 { font-family: 'Outfit', sans-serif; font-size: 24px; margin-bottom: 15px; font-weight: 800; }
+        .blog-read-all-btn { margin-top: 40px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-light); padding: 12px 28px; border-radius: 16px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; }
+        .blog-read-all-btn:hover { background: var(--accent-gradient); border-color: transparent; box-shadow: 0 0 20px var(--glow-color); transform: scale(1.03); }
+
+        .blog-header-wrapper, .art-header-wrapper, .ai-header-wrapper { text-align: center; padding: 130px 20px 50px; max-width: 800px; margin: 0 auto; }
+        .blog-header-wrapper h1, .art-header-wrapper h1, .ai-header-wrapper h1 { font-family: 'Outfit', sans-serif; font-size: 46px; font-weight: 800; margin-bottom: 15px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .ai-header-wrapper h1 { background: linear-gradient(135deg, var(--butterfly-color), #0088ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .blog-timeline { display: flex; flex-direction: column; gap: 30px; max-width: 800px; margin: 0 auto; }
+        
+        .back-to-main { display: inline-flex; align-items: center; gap: 8px; color: var(--butterfly-color); font-weight: 700; font-size: 14px; margin-bottom: 25px; cursor: pointer; transition: transform 0.3s, color 0.3s; }
+        .back-to-main:hover { color: var(--accent-color); transform: translateX(-5px); }
+
+        .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; margin-top: 30px; }
+        .art-card { background: var(--card-bg); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 69, 0, 0.1); cursor: pointer; display: flex; flex-direction: column; transition: all 0.4s; }
+        .art-card:hover { transform: translateY(-8px); border-color: rgba(255, 69, 0, 0.4); box-shadow: 0 15px 35px rgba(255, 69, 0, 0.2); }
+        .art-img-container { width: 100%; aspect-ratio: 1; background: #140e0e; overflow: hidden; }
+        .art-img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .art-card:hover .art-img-container img { transform: scale(1.05); }
+        .art-info { padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+        .art-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; }
+        .art-artist { font-size: 13px; color: var(--butterfly-color); font-weight: 600; }
+        .art-desc { font-size: 14px; color: #94a3b8; line-height: 1.4; margin-top: 4px; }
+
+        .ai-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-top: 40px; }
+        .ai-card { background: rgba(10, 15, 25, 0.6); border-radius: 24px; border: 1px solid rgba(0, 210, 255, 0.15); padding: 25px; transition: all 0.4s; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+        .ai-card:hover { transform: translateY(-8px); border-color: var(--butterfly-color); box-shadow: 0 15px 35px rgba(0, 210, 255, 0.1); }
+        .ai-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(to right, var(--butterfly-color), var(--accent-color)); opacity: 0.7; }
+        .ai-tag-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .ai-model-tag { font-size: 11px; font-weight: 800; text-transform: uppercase; background: rgba(0, 210, 255, 0.12); color: var(--butterfly-color); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(0, 210, 255, 0.2); }
+        .ai-status-tag { font-size: 11px; font-weight: 700; color: #10b981; display: flex; align-items: center; gap: 5px; }
+        .ai-card h3 { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+        .ai-prompt-box { background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 12px; font-size: 12px; border-left: 2px solid var(--accent-color); margin-bottom: 20px; font-style: italic; }
+        .ai-action-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; font-weight: bold; }
+        .ai-action-btn:hover { background: var(--butterfly-color); color: #000; border-color: transparent; box-shadow: 0 0 15px rgba(0, 210, 255, 0.3); }
+
+        .ticker-wrapper { width: 100%; max-width: 650px; margin: 40px auto 0; overflow: hidden; background: #050406; border: 2px solid #140e0e; border-radius: 16px; padding: 12px 0; box-shadow: 0 0 25px rgba(255, 69, 0, 0.15), inset 0 0 10px rgba(0,0,0,0.8); display: flex; justify-content: center; margin-bottom: 20px; }
+        .ticker-track { display: flex; width: max-content; }
+        .ticker-text { font-family: 'Outfit', monospace; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; padding-right: 40px; background: linear-gradient(to right, #ff4500, #ffaa00, #4eff00, #00ffea, #0040ff, #ff00bf, #ff4500); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: scrollMarquee 15s linear infinite, rainbowFlow 4s linear infinite; }
+        @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes rainbowFlow { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        /* ИСПРАВЛЕНО: Скрываем модальные окна по умолчанию через display: none; */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(12px); 
+            display: none; align-items: center; justify-content: center; 
+            z-index: 2000; opacity: 0; transition: opacity 0.4s ease; 
+        }
+        .modal-overlay.active { 
+            display: flex; opacity: 1; 
+        }
+        
+        .modal-container { background: #0f0f14; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; border-radius: 28px; padding: 40px; border: 1px solid rgba(255, 69, 0, 0.25); transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
+        .modal-overlay.active .modal-container { transform: scale(1) translateY(0); }
+        .close-btn { position: absolute; top: 25px; right: 25px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: var(--text-color); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.2s; }
+        .close-btn:hover { background: rgba(255, 69, 0, 0.2); color: var(--accent-color); }
+        .fursona-view { text-align: center; }
+        
+        /* ИСПРАВЛЕНО: Фикс верстки фурсона-изображения */
+        .fursona-img-wrapper { 
+            width: 100%; max-height: 380px; border-radius: 20px; 
+            overflow: hidden; border: 2px solid var(--accent-color); 
+            margin-bottom: 20px; background: #1a1616;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .fursona-img-wrapper img { width: 100%; height: auto; max-height: 380px; object-fit: contain; }
+
+        .lightbox-content { display: flex; flex-direction: column; align-items: center; max-width: 100%; }
+        .lightbox-img-wrapper { max-width: 100%; max-height: 65vh; border-radius: 16px; overflow: hidden; border: 2px solid var(--accent-color); margin-bottom: 20px; background: #140e0e; }
+        .lightbox-img-wrapper img { max-width: 100%; max-height: 65vh; display: block; object-fit: contain; }
+
+        footer { border-top: 1px solid rgba(255, 69, 0, 0.1); padding: 40px 20px; text-align: center; background: rgba(5, 5, 8, 0.4); margin-bottom: 100px; }
+        .footer-note { font-size: 13px; color: #64748b; margin-top: 10px; }
+        .tracklist { margin-top: 22px; list-style: none; counter-reset: track-counter; }
+        .tracklist li { position: relative; padding: 12px 15px 12px 45px; border-bottom: 1px solid rgba(255,255,255,0.03); border-radius: 8px; }
+        .tracklist li::before { counter-increment: track-counter; content: counter(track-counter, decimal-leading-zero); position: absolute; left: 15px; color: var(--accent-color); font-weight: 700; }
+        
+        /* Декоративный шильдик Любимого трека */
+        .favorite-badge {
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* --- СТИЛИ КРАСИВОГО РАЗДЕЛА ИЗБРАННОГО НА ГЛАВНОЙ --- */
+        .featured-ai-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 30px;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .featured-ai-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .featured-ai-card {
+            background: rgba(15, 12, 12, 0.4);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 204, 0, 0.15);
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .featured-ai-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 3px; height: 100%;
+            background: linear-gradient(to bottom, #ffcc00, #ff4500);
+        }
+        .featured-ai-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 204, 0, 0.5);
+            box-shadow: 0 12px 30px rgba(255, 204, 0, 0.1), 0 0 15px rgba(255, 69, 0, 0.05);
+        }
+        
+        /* Вращающаяся виниловая обложка */
+        .rotating-cover-wrapper {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+            background: #140e0e;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(255, 204, 0, 0.1);
+            border: 2px solid #000;
+            overflow: hidden;
+        }
+        .rotating-cover-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 3px solid #000;
+            box-shadow: inset 0 0 5px rgba(255,255,255,0.2);
+            z-index: 2;
+        }
+        .rotating-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: rotateVinyl 12s linear infinite;
+            animation-play-state: paused;
+            transition: filter 0.3s;
+        }
+        .featured-ai-card.playing .rotating-cover {
+            animation-play-state: running;
+            filter: brightness(1.1);
+        }
+        @keyframes rotateVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .featured-ai-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+            min-width: 0;
+        }
+        .featured-ai-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .featured-ai-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .featured-ai-desc {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .featured-ai-model {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--butterfly-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(0, 210, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 6px;
+            width: fit-content;
+        }
+        .featured-ai-play {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            color: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .featured-ai-card:hover .featured-ai-play {
+            background: linear-gradient(135deg, #ffcc00, #ff4500);
+            color: #000;
+            border-color: transparent;
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+        }
+        .featured-ai-card.playing .featured-ai-play {
+            background: linear-gradient(135deg, var(--butterfly-color), #0088ff);
+            color: #000;
+            border-color: transparent;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container" onclick="handleLogoClickForAdmin()">
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="logoGrad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ff4500"/><stop offset="100%" stop-color="#ff8c00"/></linearGradient></defs>
+                <path d="M 25 20 A 40 40 0 1 1 15 75" fill="none" stroke="url(#logoGrad)" stroke-width="5.5" stroke-linecap="round"/>
+                <path d="M 15 45 A 40 40 0 0 1 70 15" fill="none" stroke="url(#logoGrad)" stroke-width="5.5" stroke-dasharray="2 6" stroke-linecap="round"/>
+                <path d="M 25 75 L 38 52 L 50 18 L 62 52 L 75 75" fill="none" stroke="url(#logoGrad)" stroke-width="6.5" stroke-linejoin="miter" stroke-linecap="round"/>
+                <path d="M 38 52 L 50 75 L 62 52" fill="none" stroke="url(#logoGrad)" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
+                <path d="M 30 48 L 74 48 L 74 62 M 52 48 L 52 32 M 52 60 L 68 60" fill="none" stroke="url(#logoGrad)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+        </div>
+
+        <div class="nav-right-actions">
+            <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
+            <div class="lang-switcher">
+                <div class="lang-current" id="langCurrentBtn">
+                    <!-- Адаптивный SVG-флаг, который отображается везде -->
+                </div>
+                <ul class="lang-dropdown">
+                    <li onclick="changeLang('ru')">
+                        <svg class="flag-icon" viewBox="0 0 90 60"><rect width="90" height="20" fill="#fff"/><rect y="20" width="90" height="20" fill="#0039a6"/><rect y="40" width="90" height="20" fill="#d52b1e"/></svg> RU
+                    </li>
+                    <li onclick="changeLang('ua')">
+                        <svg class="flag-icon" viewBox="0 0 90 60"><rect width="90" height="30" fill="#0057b7"/><rect y="30" width="90" height="30" fill="#ffd700"/></svg> UA
+                    </li>
+                    <li onclick="changeLang('en')">
+                        <svg class="flag-icon" viewBox="0 0 74 39"><rect width="74" height="39" fill="#b22234"/><path d="M0 0h74v3H0zm0 6h74v3H0zm0 12h74v3H0zm0 12h74v3H0zm0 12h74v3H0zm0 12h74v3H0zm0 12h74v3H0z" fill="#fff"/><rect width="30" height="21" fill="#3c3b6e"/><g fill="#fff"><circle cx="4" cy="4" r="0.5"/><circle cx="10" cy="4" r="0.5"/><circle cx="16" cy="4" r="0.5"/><circle cx="22" cy="4" r="0.5"/><circle cx="7" cy="8" r="0.5"/><circle cx="13" cy="8" r="0.5"/><circle cx="19" cy="16" r="0.5"/><circle cx="25" cy="16" r="0.5"/></g></svg> EN
+                    </li>
+                </ul>
+            </div>
+
+            <!-- МЕНЮ-ГАМБУРГЕР -->
+            <div class="menu-container" id="mainMenuContainer">
+                <div class="hamburger-btn" id="hamburgerBtn">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+                <ul class="nav-links">
+                    <li><a onclick="switchToPage('main'); setTimeout(() => document.getElementById('music').scrollIntoView({behavior:'smooth'}), 200)" data-translate="nav-releases"><i class="fa-solid fa-compact-disc"></i> Релизы</a></li>
+                    <li><a onclick="switchToPage('blog')" data-translate="nav-blog"><i class="fa-solid fa-book-open"></i> Бортовой журнал</a></li>
+                    <li><a onclick="switchToPage('arts')" data-translate="nav-arts"><i class="fa-solid fa-palette"></i> Арты</a></li>
+                    <li><a onclick="switchToPage('ai')" class="ai-link" data-translate="nav-ai"><i class="fa-solid fa-microchip"></i> Нейросеть</a></li>
+                    <li style="border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 10px; padding-top: 15px; padding-left: 14px; font-size: 11px; color: rgba(255,255,255,0.4);">
+                        <span style="display:block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;" data-translate="nav-collab-title">Сотрудничество</span>
+                        <a href="mailto:raidbronywork@yandex.ru" style="padding: 0; opacity: 1; color: var(--accent-color); font-size: 12px; font-family: 'Outfit', monospace;" id="collabEmailLink">
+                            <i class="fa-solid fa-envelope"></i> raidbronywork@yandex.ru
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <audio id="globalAudioElement"></audio>
+
+    <div class="glowing-music-player" id="glowingMusicPlayer">
+        <div class="player-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <!-- Добавлен контейнер для обложки трека в левой части плеера -->
+                <div id="playerTrackCover" style="width: 48px; height: 48px; border-radius: 8px; overflow: hidden; background: #140e0e; border: 1px solid rgba(255, 69, 0, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 10px rgba(255, 69, 0, 0.15);">
+                    <img src="" alt="" style="width: 100%; height: 100%; object-fit: cover; display: none;" id="playerCoverImg" onerror="this.style.display='none'; document.getElementById('playerCoverIcon').style.display='block';">
+                    <i class="fa-solid fa-music" style="color: var(--accent-color); font-size: 16px;" id="playerCoverIcon"></i>
+                </div>
+                <div class="player-track-info">
+                    <div class="player-track-title" id="playerTrackTitle">Название трека</div>
+                    <div class="player-track-source" id="playerTrackSource">Нейросеть: Udio</div>
+                </div>
+            </div>
+            <button class="player-close-btn" onclick="stopGlobalAudio()"><i class="fa-solid fa-circle-stop"></i></button>
+        </div>
+        <div class="player-controls-row">
+            <button class="player-btn-main" id="playerPlayPauseBtn" onclick="togglePlayPause()"><i class="fa-solid fa-pause"></i></button>
+            <div class="player-progress-container">
+                <div class="player-progress-bar-bg" id="progressBarBg" onclick="seekAudio(event)">
+                    <div class="player-progress-bar-fill" id="progressBarFill"></div>
+                </div>
+                <div class="player-time-row">
+                    <span id="playerCurrentTime">0:00</span>
+                    <span id="playerTotalTime">0:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-collab-badge">
+        <div class="collab-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="collab-text">
+            <span data-translate="collab-widget-title">По вопросам сотрудничества</span>
+            <a href="mailto:raidbronywork@yandex.ru">raidbronywork@yandex.ru</a>
+        </div>
+    </div>
+
+    <div id="main-page" class="page-view">
+        <header class="hero">
+            <div class="avatar-container" onclick="openModal('fursonaModal')">
+                <svg class="hero-logo-backdrop" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heroLogoGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#ff4500" />
+                            <stop offset="100%" stop-color="#ffaa00" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 25 20 A 40 40 0 1 1 15 75" fill="none" stroke="url(#heroLogoGrad)" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M 15 45 A 40 40 0 0 1 70 15" fill="none" stroke="url(#heroLogoGrad)" stroke-width="5" stroke-dasharray="2 6" stroke-linecap="round"/>
+                    <path d="M 25 75 L 38 52 L 50 18 L 62 52 L 75 75" fill="none" stroke="url(#heroLogoGrad)" stroke-width="6" stroke-linejoin="miter" stroke-linecap="round"/>
+                    <path d="M 38 52 L 50 75 L 62 52" fill="none" stroke="url(#heroLogoGrad)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+                    <path d="M 30 48 L 74 48 L 74 62 M 52 48 L 52 32 M 52 60 L 68 60" fill="none" stroke="url(#logoGrad)" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+                </svg>
+                <div class="avatar-placeholder"><img src="photo_2026-05-18_09-49-03.jpg" alt="RaiDash Avatar"></div>
+                <div class="avatar-badge">RaiDash</div>
+                <div class="avatar-hint" id="avatarHintBtn" data-translate="hero-hint"><i class="fa-solid fa-magnifying-glass-plus"></i> открыть арт</div>
+            </div>
+            <h1 data-translate="hero-title">Привет, я Рей!</h1>
+            <p data-translate="hero-desc">Я фурри и брони музыкант, который пишет музыку ради удовольствия :3</p>
+        </header>
+
+        <main class="container">
+            <section id="music">
+                <div class="section-header">
+                    <h2 data-translate="section-releases">Музыкальные релизы</h2>
+                    <div class="slider-controls">
+                        <button class="slider-btn" id="slidePrev"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button class="slider-btn" id="slideNext"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <div class="slider-outer-wrapper" id="sliderOuter">
+                    <div class="slider-container"><div class="slider-track" id="musicContainer"></div></div>
+                </div>
+            </section>
+
+            <!-- КРАСИВЫЙ СТИЛЬНЫЙ БЛОК ДЛЯ ИЗБРАННЫХ ИИ-ШЕДЕВРОВ -->
+            <section id="featured-ai-section" style="display: none;">
+                <div class="section-header">
+                    <h2 data-translate="section-featured-ai">Избранные ИИ-Шедевры</h2>
+                </div>
+                <div class="featured-ai-grid" id="featuredAiContainer">
+                    <!-- Загружается динамически на основе isFavorite -->
+                </div>
+            </section>
+
+            <section id="main-blog-section">
+                <div class="section-header"><h2 data-translate="section-blog">Последняя мысль</h2></div>
+                <div class="blog-section-main" id="featuredBlogContainer"></div>
+            </section>
+        </main>
+    </div>
+
+    <div id="blog-page" class="page-view hidden">
+        <header class="blog-header-wrapper">
+            <div class="back-to-main" onclick="switchToPage('main')" data-translate="back-to-den"><i class="fa-solid fa-arrow-left"></i> Вернуться в логово</div>
+            <h1 data-translate="blog-title-header">Бортовой журнал</h1>
+            <p style="color: #94a3b8; font-size: 18px; line-height: 1.6;" data-translate="blog-sub-header">Здесь собраны абсолютно все записи моего логова.</p>
+        </header>
+        <main class="container" style="padding-top: 0;"><div class="blog-timeline" id="fullBlogContainer"></div></main>
+    </div>
+
+    <div id="arts-page" class="page-view hidden">
+        <header class="art-header-wrapper">
+            <div class="back-to-main" onclick="switchToPage('main')" data-translate="back-to-den"><i class="fa-solid fa-arrow-left"></i> Вернуться в логово</div>
+            <h1 data-translate="art-title-header">Галерея Артов</h1>
+            <p style="color: #94a3b8; font-size: 18px; line-height: 1.6;" data-translate="art-sub-header">Мои собственные арты и рисунки с моей фурсоной.</p>
+        </header>
+        <main class="container" style="padding-top: 0;"><div class="art-grid" id="artsContainer"></div></main>
+    </div>
+
+    <div id="ai-page" class="page-view hidden">
+        <header class="ai-header-wrapper">
+            <div class="back-to-main" onclick="switchToPage('main')" data-translate="back-to-den"><i class="fa-solid fa-arrow-left"></i> Вернуться в логово</div>
+            <h1 data-translate="ai-title-header">Нейросеть</h1>
+            <p style="color: #94a3b8; font-size: 18px; line-height: 1.6;" data-translate="ai-sub-header">Эксперименты, сгенерированные при помощи нейросетей.</p>
+        </header>
+        <main class="container" style="padding-top: 0;"><div class="ai-grid" id="aiContainer"></div></main>
+    </div>
+
+    <div class="ticker-wrapper">
+        <div class="ticker-track">
+            <div class="ticker-text">я просто пишу музыку! ничего личного! • я просто пишу музыку! ничего личного! • я просто пишу музыку! ничего личного! • </div>
+            <div class="ticker-text" aria-hidden="true">я просто пишу музыку! ничего личного! • я просто пишу музыку! ничего личного! • я просто пишу музыку! ничего личного! • </div>
+        </div>
+    </div>
+
+    <footer>
+        <p data-translate="footer-rights">&copy; 2026 wntfixall. Все права защищены.</p>
+        <p class="footer-note" data-translate="footer-sub">wntfixall (a.k.a. RaiDBrony, a.k.a Рей)</p>
+    </footer>
+
+    <div class="modal-overlay" id="albumModal"><div class="modal-container"><button class="close-btn" onclick="closeModal('albumModal')">&times;</button><div id="albumModalBody"></div></div></div>
+    
+    <div class="modal-overlay" id="fursonaModal">
+        <div class="modal-container">
+            <button class="close-btn" onclick="closeModal('fursonaModal')">&times;</button>
+            <div class="fursona-view">
+                <h2 style="font-family:'Outfit'; margin-bottom: 15px;" data-translate="fursona-modal-title">Моя Фурсона 🐾</h2>
+                <div class="fursona-img-wrapper"><img src="photo_2026-05-18_09-49-03.jpg" alt="RaiDash" onerror="this.src='https://placehold.co/400?text=RaiDash'"></div>
+                <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; text-align: left; background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: 12px; border-left: 3px solid var(--accent-color);" data-translate="fursona-modal-desc">Рей — гепард-броні з яскравими зеленими очима та пристрастю до глибокого ембієнту. Метелик на лапці символизирует легке натхнення.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="lightboxModal"><div class="modal-container" style="max-width: 750px;"><button class="close-btn" onclick="closeModal('lightboxModal')">&times;</button><div class="lightbox-content" id="lightboxContentBody"></div></div></div>
+
+    <!-- СКРИПТЫ -->
+    <script>
+        const defaultAlbums = [];
+        const defaultBlog = [
+            { date: "18 Мая, 2026", title: "Свежие треки уже на подходе!", text: "Получается очень атмосферно и безумно тепло. Надеюсь, вам зайдет!" },
+            { date: "14 Мая, 2026", title: "Обновление музыкального логова", text: "Сделал дизайн сайта более сочным и добавил удобный слайдер для релизов." }
+        ];
+        const defaultAiWorks = [
+            { title: "Самолёты", model: "Suno v3.5", cover: "neiromusic/samolety_cover.jpg", audioUrl: "neiromusic/samolety.mp3", prompt: "emotional ambient rock, space pads, soaring guitar solo, male vocals", description: "Трек про полёты и свободу!", isFavorite: true }
+        ];
+        const defaultArts = [
+            { title: "Рей и бабочка", artist: "Неизвестный художник", image: "photo_2026-05-18_09-49-03.jpg", description: "Главный арт моей фурсоны. Нежный гепард созерцает прекрасную голубую бабочку." }
+        ];
+
+        let albums = JSON.parse(localStorage.getItem('wnt_albums')) || defaultAlbums;
+        let blogPosts = JSON.parse(localStorage.getItem('wnt_blog')) || defaultBlog;
+        let aiWorks = JSON.parse(localStorage.getItem('wnt_ai')) || defaultAiWorks;
+        let artWorks = JSON.parse(localStorage.getItem('wnt_arts')) || defaultArts;
+
+        const musicContainer = document.getElementById('musicContainer');
+        const featuredBlogContainer = document.getElementById('featuredBlogContainer');
+        const fullBlogContainer = document.getElementById('fullBlogContainer');
+        const aiContainer = document.getElementById('aiContainer');
+        const artsContainer = document.getElementById('artsContainer');
+        const featuredAiContainer = document.getElementById('featuredAiContainer');
+
+        /* --- СИСТЕМА ЛОКАЛИЗАЦИИ --- */
+        let currentLang = localStorage.getItem('wnt_lang') || 'ru';
+
+        const translations = {
+            ru: {
+                "title": "wntfixall | Музыкальное Логово",
+                "nav-releases": "<i class=\"fa-solid fa-compact-disc\"></i> Релизы",
+                "nav-blog": "<i class=\"fa-solid fa-book-open\"></i> Бортовой журнал",
+                "nav-arts": "<i class=\"fa-solid fa-palette\"></i> Арты",
+                "nav-ai": "<i class=\"fa-solid fa-microchip\"></i> Нейросеть",
+                "nav-collab-title": "Сотрудничество",
+                "hero-title": "Привет, я Рей!",
+                "hero-desc": "Я фурри и брони музыкант, который пишет музыку ради удовольствия :3",
+                "hero-hint": "<i class=\"fa-solid fa-magnifying-glass-plus\"></i> открыть арт",
+                "section-releases": "Музыкальные релизы",
+                "section-blog": "Последняя мысль",
+                "section-featured-ai": "Избранные ИИ-Шедевры",
+                "footer-rights": "&copy; 2026 wntfixall. Все права защищены.",
+                "footer-sub": "wntfixall (a.k.a. RaiDBrony, a.k.a Рей)",
+                "collab-widget-title": "По вопросам сотрудничества",
+                "blog-title-header": "Бортовой журнал",
+                "blog-sub-header": "Здесь собраны абсолютно все записи моего логова.",
+                "art-title-header": "Галерея Артов",
+                "art-sub-header": "Мои собственные арты и рисунки с моей фурсоной.",
+                "ai-title-header": "Нейросеть",
+                "ai-sub-header": "Эксперименты, сгенерированные при помощи нейросетей.",
+                "empty-releases": "Релизов пока нет. 🐾",
+                "empty-blog": "Журнал пуст. 🐾",
+                "empty-ai": "Нейросетевых треков пока нет. 🤖",
+                "empty-arts": "В галерее пока нет артов. 🎨",
+                "blog-btn": "<i class=\"fa-solid fa-book-open\"></i> Читать весь бортовой журнал",
+                "back-to-den": "<i class=\"fa-solid fa-arrow-left\"></i> Вернуться в логово",
+                "play-track": "<i class=\"fa-solid fa-play\"></i> Запустить трек",
+                "ready-tag": "Готов",
+                "artist-label": "Автор:",
+                "fursona-modal-title": "Моя Фурсона 🐾",
+                "fursona-modal-desc": "Рей — гепард-брони с яркими зелеными глазами и страстью к глубокому эмбиенту. Бабочка на лапке символизирует легкое вдохновение.",
+                "release-year-label": "Год релиза:",
+                "empty-tracks": "Список треков пуст.",
+                "no-desc": "Без описания.",
+                "tracklist-title": "Треклист:",
+                "drawn-by": "Рисовал художник:",
+                "prompt-label": "Промпт:"
+            },
+            ua: {
+                "title": "wntfixall | Музичне Лігво",
+                "nav-releases": "<i class=\"fa-solid fa-compact-disc\"></i> Релізи",
+                "nav-blog": "<i class=\"fa-solid fa-book-open\"></i> Бортовий журнал",
+                "nav-arts": "<i class=\"fa-solid fa-palette\"></i> Арти",
+                "nav-ai": "<i class=\"fa-solid fa-microchip\"></i> Нейромережа",
+                "nav-collab-title": "Співпраця",
+                "hero-title": "Привіт, я Рей!",
+                "hero-desc": "Я фуррі та броні музикант, який пише музику для задоволення :3",
+                "hero-hint": "<i class=\"fa-solid fa-magnifying-glass-plus\"></i> відкрити арт",
+                "section-releases": "Музичні релізи",
+                "section-blog": "Остання думка",
+                "section-featured-ai": "Обрані ШІ-Шедеври",
+                "footer-rights": "&copy; 2026 wntfixall. Всі права захищені.",
+                "footer-sub": "wntfixall (a.k.a. RaiDBrony, a.k.a Рей)",
+                "collab-widget-title": "З питань співпраці",
+                "blog-title-header": "Бортовий журнал",
+                "blog-sub-header": "Тут зібрані абсолютно всі записи мого лігва.",
+                "art-title-header": "Галерея Артів",
+                "art-sub-header": "Мої власні арти та малюнки з моєю фурсоною.",
+                "ai-title-header": "Нейромережа",
+                "ai-sub-header": "Експерименти, згенеровані за допомогою нейромереж.",
+                "empty-releases": "Релізів поки немає. 🐾",
+                "empty-blog": "Журнал порожній. 🐾",
+                "empty-ai": "Нейромережевих треків поки немає. 🤖",
+                "empty-arts": "У галереї поки немає артів. 🎨",
+                "blog-btn": "<i class=\"fa-solid fa-book-open\"></i> Читать весь бортовий журнал",
+                "back-to-den": "<i class=\"fa-solid fa-arrow-left\"></i> Повернутися в лігво",
+                "play-track": "<i class=\"fa-solid fa-play\"></i> Запустити трек",
+                "ready-tag": "Готовій",
+                "artist-label": "Автор:",
+                "fursona-modal-title": "Моя Фурсона 🐾",
+                "fursona-modal-desc": "Рей — гепард-броні з яскравими зеленими очима та пристрастю до глибокого ембієнту. Метелик на лапці символізує легке натхнення.",
+                "release-year-label": "Рік релізу:",
+                "empty-tracks": "Список треків порожній.",
+                "no-desc": "Без опису.",
+                "tracklist-title": "Трекліст:",
+                "drawn-by": "Малював художник:",
+                "prompt-label": "Промпт:"
+            },
+            en: {
+                "title": "wntfixall | Music Den",
+                "nav-releases": "<i class=\"fa-solid fa-compact-disc\"></i> Releases",
+                "nav-blog": "<i class=\"fa-solid fa-book-open\"></i> Logbook",
+                "nav-arts": "<i class=\"fa-solid fa-palette\"></i> Arts",
+                "nav-ai": "<i class=\"fa-solid fa-microchip\"></i> Neural Net",
+                "nav-collab-title": "Collaboration",
+                "hero-title": "Hi, I'm Ray!",
+                "hero-desc": "I'm a furry and brony musician who writes music for fun :3",
+                "hero-hint": "<i class=\"fa-solid fa-magnifying-glass-plus\"></i> open art",
+                "section-releases": "Music Releases",
+                "section-blog": "Latest Thought",
+                "section-featured-ai": "Featured AI Masterpieces",
+                "footer-rights": "&copy; 2026 wntfixall. All rights reserved.",
+                "footer-sub": "wntfixall (a.k.a. RaiDBrony, a.k.a Ray)",
+                "collab-widget-title": "For collaboration inquiries",
+                "blog-title-header": "Captain's Log",
+                "blog-sub-header": "Here are gathered absolutely all the records of my den.",
+                "art-title-header": "Art Gallery",
+                "art-sub-header": "My own arts and drawings with my fursona.",
+                "ai-title-header": "Neural Network",
+                "ai-sub-header": "Experiments generated using neural networks.",
+                "empty-releases": "No releases yet. 🐾",
+                "empty-blog": "The journal is empty. 🐾",
+                "empty-ai": "No neural tracks yet. 🤖",
+                "empty-arts": "No arts in the gallery yet. 🎨",
+                "blog-btn": "<i class=\"fa-solid fa-book-open\"></i> Read entire logbook",
+                "back-to-den": "<i class=\"fa-solid fa-arrow-left\"></i> Return to Den",
+                "play-track": "<i class=\"fa-solid fa-play\"></i> Play Track",
+                "ready-tag": "Ready",
+                "artist-label": "Artist:",
+                "fursona-modal-title": "My Fursona 🐾",
+                "fursona-modal-desc": "Ray is a cheerful cheetah-brony with bright green eyes and a passion for deep ambient music. The butterfly on his paw symbolizes light inspiration.",
+                "release-year-label": "Release year:",
+                "empty-tracks": "Tracklist is empty.",
+                "no-desc": "No description.",
+                "tracklist-title": "Tracklist:",
+                "drawn-by": "Drawn by artist:",
+                "prompt-label": "Prompt:"
+            }
+        };
+
+        function changeLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('wnt_lang', lang);
+            applyLanguage();
+            document.querySelector('.lang-switcher').classList.remove('active');
+        }
+
+        function applyLanguage() {
+            const btn = document.getElementById('langCurrentBtn');
+            if (currentLang === 'ru') {
+                btn.innerHTML = `<svg class="flag-icon" viewBox="0 0 90 60" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><rect width="90" height="20" fill="#fff"/><rect y="20" width="90" height="20" fill="#0039a6"/><rect y="40" width="90" height="20" fill="#d52b1e"/></svg> RU <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px; transition: transform 0.3s;"></i>`;
+            } else if (currentLang === 'ua') {
+                btn.innerHTML = `<svg class="flag-icon" viewBox="0 0 90 60" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><rect width="90" height="30" fill="#0057b7"/><rect y="30" width="90" height="30" fill="#ffd700"/></svg> UA <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px; transition: transform 0.3s;"></i>`;
+            } else {
+                btn.innerHTML = `<svg class="flag-icon" viewBox="0 0 74 39" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><rect width="74" height="39" fill="#b22234"/><path d="M0 0h74v3H0zm0 6h74v3H0zm0 12h74v3H0zm0 12h74v3H0zm0 12h74v3H0zm0 12h74v3H0zm0 12h74v3H0z" fill="#fff"/><rect width="30" height="21" fill="#3c3b6e"/><g fill="#fff"><circle cx="4" cy="4" r="0.5"/><circle cx="10" cy="4" r="0.5"/><circle cx="16" cy="4" r="0.5"/><circle cx="22" cy="4" r="0.5"/><circle cx="7" cy="8" r="0.5"/><circle cx="13" cy="8" r="0.5"/><circle cx="19" cy="16" r="0.5"/><circle cx="25" cy="16" r="0.5"/></g></svg> EN <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px; transition: transform 0.3s;"></i>`;
+            }
+
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            document.title = translations[currentLang]['title'];
+            renderAll();
+        }
+
+        const langSwitcher = document.querySelector('.lang-switcher');
+        langSwitcher.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langSwitcher.classList.toggle('active');
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!langSwitcher.contains(e.target)) {
+                langSwitcher.classList.remove('active');
+            }
+        });
+
+        /* --- ЛОГИКА ПЕРЕХОДА НА ОТДЕЛЬНЫЙ ФАЙЛ АДМИНКИ --- */
+        let keyBuffer = '';
+        let logoClicks = 0;
+        let lastLogoClickTime = 0;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key.length === 1) {
+                keyBuffer += e.key.toLowerCase();
+                if (keyBuffer.length > 20) keyBuffer = keyBuffer.substring(keyBuffer.length - 20);
+                if (keyBuffer.endsWith('wntfixall')) window.location.href = 'admin.html';
+            }
+        });
+
+        function handleLogoClickForAdmin() {
+            const currentTime = Date.now();
+            if (currentTime - lastLogoClickTime > 350) logoClicks = 0;
+            logoClicks++;
+            lastLogoClickTime = currentTime;
+            if (logoClicks >= 5) {
+                logoClicks = 0;
+                window.location.href = 'admin.html';
+            } else if (logoClicks === 1) {
+                switchToPage('main');
+            }
+        }
+
+        function switchToPage(pageId) {
+            const mainPage = document.getElementById('main-page');
+            const blogPage = document.getElementById('blog-page');
+            const aiPage = document.getElementById('ai-page');
+            const artsPage = document.getElementById('arts-page');
+
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.getElementById('mainMenuContainer').classList.remove('active');
+
+            mainPage.classList.add('hidden');
+            blogPage.classList.add('hidden');
+            aiPage.classList.add('hidden');
+            artsPage.classList.add('hidden');
+
+            if (pageId === 'ai') aiPage.classList.remove('hidden');
+            else if (pageId === 'blog') blogPage.classList.remove('hidden');
+            else if (pageId === 'arts') artsPage.classList.remove('hidden');
+            else { mainPage.classList.remove('hidden'); setTimeout(setupSliderLogic, 200); }
+        }
+
+        const mainMenuContainer = document.getElementById('mainMenuContainer');
+        document.getElementById('hamburgerBtn').addEventListener('click', (e) => { e.stopPropagation(); mainMenuContainer.classList.toggle('active'); });
+        window.addEventListener('click', (e) => { if (!mainMenuContainer.contains(e.target)) mainMenuContainer.classList.remove('active'); });
+
+        const audioEl = document.getElementById('globalAudioElement');
+        const playerWidget = document.getElementById('glowingMusicPlayer');
+        const playPauseBtn = document.getElementById('playerPlayPauseBtn');
+        const progressBarFill = document.getElementById('progressBarFill');
+        let isPlaying = false;
+
+        function playGlobalAudio(audioUrl, title, sourceInfo, coverUrl) {
+            if (!audioUrl) return;
+            audioEl.src = audioUrl;
+            document.getElementById('playerTrackTitle').textContent = title;
+            document.getElementById('playerTrackSource').textContent = sourceInfo;
+            
+            const coverImg = document.getElementById('playerCoverImg');
+            const coverIcon = document.getElementById('playerCoverIcon');
+            
+            if (coverUrl) {
+                coverImg.src = coverUrl;
+                coverImg.style.display = 'block';
+                coverIcon.style.display = 'none';
+            } else {
+                coverImg.src = '';
+                coverImg.style.display = 'none';
+                coverIcon.style.display = 'block';
+            }
+
+            progressBarFill.style.width = '0%';
+            audioEl.play().then(() => {
+                isPlaying = true; playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; playerWidget.classList.add('active');
+                updateActiveCardsState(audioUrl);
+            }).catch(err => console.error(err));
+        }
+        function togglePlayPause() {
+            if (!audioEl.src) return;
+            if (isPlaying) { 
+                audioEl.pause(); 
+                isPlaying = false; 
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; 
+                document.querySelectorAll('.featured-ai-card').forEach(c => c.classList.remove('playing'));
+            } else { 
+                audioEl.play(); 
+                isPlaying = true; 
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; 
+                updateActiveCardsState(audioEl.src);
+            }
+        }
+        function stopGlobalAudio() { 
+            audioEl.pause(); 
+            audioEl.src = ''; 
+            isPlaying = false; 
+            playerWidget.classList.remove('active'); 
+            document.querySelectorAll('.featured-ai-card').forEach(c => c.classList.remove('playing'));
+        }
+
+        function updateActiveCardsState(currentSrc) {
+            document.querySelectorAll('.featured-ai-card').forEach(card => {
+                const cardPlayBtn = card.querySelector('.featured-ai-play');
+                if (cardPlayBtn) {
+                    const trackUrl = cardPlayBtn.getAttribute('data-url');
+                    if (currentSrc.includes(trackUrl) && isPlaying) {
+                        card.classList.add('playing');
+                        cardPlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    } else {
+                        card.classList.remove('playing');
+                        cardPlayBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    }
+                }
+            });
+        }
+
+        audioEl.addEventListener('timeupdate', () => {
+            if (!audioEl.duration) return;
+            progressBarFill.style.width = `${(audioEl.currentTime / audioEl.duration) * 100}%`;
+            document.getElementById('playerCurrentTime').textContent = formatTime(audioEl.currentTime);
+            document.getElementById('playerTotalTime').textContent = formatTime(audioEl.duration);
+        });
+        audioEl.addEventListener('ended', () => { 
+            isPlaying = false; 
+            playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; 
+            progressBarFill.style.width = '0%'; 
+            document.querySelectorAll('.featured-ai-card').forEach(c => c.classList.remove('playing'));
+        });
+        function seekAudio(event) {
+            if (!audioEl.src || !audioEl.duration) return;
+            const rect = document.getElementById('progressBarBg').getBoundingClientRect();
+            audioEl.currentTime = (event.clientX - rect.left) / rect.width * audioEl.duration;
+        }
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // ИСПРАВЛЕННО: Умный синхронизатор асинхронного fetch и локального хранилища
+        async function loadDataFromJSON() {
+            try {
+                const response = await fetch('data.json');
+                if (response.ok) {
+                    const importedData = await response.json();
+                    
+                    // Выгружаем данные и сразу сливаем их с локальной памятью во избежание потерь
+                    if (importedData.albums) { albums = importedData.albums; localStorage.setItem('wnt_albums', JSON.stringify(albums)); }
+                    if (importedData.blogPosts) { blogPosts = importedData.blogPosts; localStorage.setItem('wnt_blog', JSON.stringify(blogPosts)); }
+                    if (importedData.aiWorks) { aiWorks = importedData.aiWorks; localStorage.setItem('wnt_ai', JSON.stringify(aiWorks)); }
+                    if (importedData.artWorks) { artWorks = importedData.artWorks; localStorage.setItem('wnt_arts', JSON.stringify(artWorks)); }
+                    
+                    console.log("Данные успешно подгружены из data.json!");
+                } else {
+                    console.log("data.json пуст или сервер вернул ошибку. Используем данные из локального хранилища.");
+                }
+            } catch (e) {
+                console.log("Файл data.json отсутствует на сервере или CORS заблокировал локальный запрос. Используем локальное хранилище браузера.");
+            }
+            renderAll();
+        }
+
+        function renderAll() {
+            musicContainer.innerHTML = ''; featuredBlogContainer.innerHTML = ''; fullBlogContainer.innerHTML = ''; aiContainer.innerHTML = ''; artsContainer.innerHTML = ''; featuredAiContainer.innerHTML = '';
+
+            // Релизы
+            if (albums.length === 0) {
+                musicContainer.innerHTML = `<div class="empty-slider-state">${translations[currentLang]['empty-releases']}</div>`;
+                document.querySelector('.slider-controls').style.display = 'none';
+            } else {
+                document.querySelector('.slider-controls').style.display = 'flex';
+                albums.forEach((album, index) => {
+                    musicContainer.innerHTML += `
+                        <div class="album-card" onclick="openAlbumDetails(${index})">
+                            <div class="album-cover"><span class="album-badge">${album.type}</span><img src="${album.cover}" alt="${album.title}" onerror="this.style.opacity='0'; this.parentNode.insertAdjacentHTML('beforeend', '<i class=\'fa-solid fa-music\'></i>')"></div>
+                            <div class="album-info"><div class="album-title">${album.title}</div><div class="album-year">${album.year}</div></div>
+                        </div>`;
+                });
+            }
+
+            // Рендер Избранных ИИ-работ на главной странице
+            const favoriteAiWorks = aiWorks.filter(w => w.isFavorite);
+            const featuredSection = document.getElementById('featured-ai-section');
+            if (favoriteAiWorks.length > 0) {
+                featuredSection.style.display = 'block';
+                favoriteAiWorks.forEach((work) => {
+                    const coverImgUrl = work.cover || 'https://placehold.co/100?text=Vinyl';
+                    const isCurrentlyPlayingCard = audioEl.src.includes(work.audioUrl) && isPlaying;
+                    const playingClass = isCurrentlyPlayingCard ? 'playing' : '';
+                    const playBtnIcon = isCurrentlyPlayingCard ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+
+                    featuredAiContainer.innerHTML += `
+                        <div class="featured-ai-card ${playingClass}" id="fav-ai-${work.title.replace(/\s+/g, '-')}">
+                            <div class="rotating-cover-wrapper">
+                                <img src="${coverImgUrl}" class="rotating-cover" alt="${work.title}" onerror="this.src='https://placehold.co/100?text=Vinyl'">
+                            </div>
+                            <div class="featured-ai-info">
+                                <div class="featured-ai-title-row">
+                                    <div class="featured-ai-title">${work.title}</div>
+                                    <span class="featured-ai-model">${work.model}</span>
+                                </div>
+                                <div class="featured-ai-desc">${work.description || (currentLang === 'ru' ? 'Избранная работа Рея' : currentLang === 'ua' ? 'Обрана робота Рея' : 'Featured work by Ray')}</div>
+                                ${work.prompt ? `<div class="featured-ai-desc" style="font-style: italic; color: var(--text-color); margin-top: 4px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; width: 100%;"><strong>Prompt:</strong> ${work.prompt}</div>` : ''}
+                            </div>
+                            <div class="featured-ai-play" data-url="${work.audioUrl}" onclick="playGlobalAudio('${work.audioUrl}', '${work.title.replace(/'/g, "\\'")}', 'ИИ: ${work.model.replace(/'/g, "\\'")}', '${coverImgUrl}')">
+                                ${playBtnIcon}
+                            </div>
+                        </div>`;
+                });
+            } else {
+                featuredSection.style.display = 'none';
+            }
+
+            // Блог главная
+            if (blogPosts.length === 0) {
+                featuredBlogContainer.innerHTML = `<div class="empty-slider-state" style="max-width: 680px;">${translations[currentLang]['empty-blog']}</div>`;
+            } else {
+                const latestPost = blogPosts[0];
+                let featuredHtml = `<article class="blog-card latest-focus"><div class="blog-date">${latestPost.date}</div><h3>${latestPost.title}</h3><p style="color: #cbd5e1; line-height: 1.7; font-size: 16px; white-space: pre-line;">${latestPost.text}</p></article>`;
+                if (blogPosts.length > 1) {
+                    const secondPost = blogPosts[1];
+                    featuredHtml += `<article class="blog-card preview-depth" onclick="switchToPage('blog')"><div class="blog-date">${secondPost.date}</div><h3>${secondPost.title}</h3><p style="color: #cbd5e1; line-height: 1.7; font-size: 16px; white-space: pre-line; max-height: 70px; overflow:hidden; text-overflow:ellipsis;">${secondPost.text}</p></article>`;
+                }
+                featuredHtml += `<button class="blog-read-all-btn" onclick="switchToPage('blog')">${translations[currentLang]['blog-btn']}</button>`;
+                featuredBlogContainer.innerHTML = featuredHtml;
+            }
+
+            // Блог полный
+            blogPosts.forEach((post) => {
+                fullBlogContainer.innerHTML += `<article class="blog-card" style="max-width: 100%;"><div class="blog-date">${post.date}</div><h3>${post.title}</h3><p style="color: #cbd5e1; line-height: 1.7; font-size: 16px; white-space: pre-line;">${post.text}</p></article>`;
+            });
+
+            // Нейросеть
+            if (aiWorks.length === 0) {
+                aiContainer.innerHTML = `<div class="empty-slider-state" style="max-width: 800px; margin: 0 auto; grid-column: 1 / -1;">${translations[currentLang]['empty-ai']}</div>`;
+            } else {
+                const sortedAiWorks = [...aiWorks].sort((a, b) => {
+                    const aFav = a.isFavorite ? 1 : 0;
+                    const bFav = b.isFavorite ? 1 : 0;
+                    return bFav - aFav; 
+                });
+
+                sortedAiWorks.forEach((work) => {
+                    const coverHtml = work.cover ? `<div style="width:100%; height:180px; border-radius:16px; overflow:hidden; background:#140e0e; border:1px solid rgba(0,210,255,0.15); margin-bottom:15px; display:flex; align-items:center; justify-content:center;"><img src="${work.cover}" alt="${work.title}" style="width:100%; height:100%; object-fit:cover;"></div>` : '';
+                    const favBadgeHtml = work.isFavorite ? `<span class="favorite-badge"><i class="fa-solid fa-star"></i> FAV</span>` : '';
+
+                    aiContainer.innerHTML += `
+                        <div class="ai-card">
+                            <div>
+                                <div class="ai-tag-wrapper">
+                                    <span class="ai-model-tag">${work.model}</span>
+                                    <span class="ai-status-tag"><i class="fa-solid fa-circle-play"></i> ${translations[currentLang]['ready-tag']}</span>
+                                </div>
+                                ${coverHtml}
+                                <h3>${work.title}${favBadgeHtml}</h3>
+                                <p>${work.description || ""}</p>
+                                ${work.prompt ? `<div class="ai-prompt-box"><strong>${translations[currentLang]['prompt-label']}</strong> "${work.prompt}"</div>` : ''}
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:10px; width:100%;">
+                                <button class="ai-action-btn" onclick="playGlobalAudio('${work.audioUrl}', '${work.title.replace(/'/g, "\\'")}', 'ИИ: ${work.model.replace(/'/g, "\\'")}', '${(work.cover || '').replace(/'/g, "\\'")}')">${translations[currentLang]['play-track']}</button>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            // Арты
+            if (artWorks.length === 0) {
+                artsContainer.innerHTML = `<div class="empty-slider-state" style="max-width: 800px; margin: 0 auto;">${translations[currentLang]['empty-arts']}</div>`;
+            } else {
+                artWorks.forEach((art, index) => {
+                    artsContainer.innerHTML += `
+                        <div class="art-card" onclick="openArtLightbox(${index})">
+                            <div class="art-img-container"><img src="${art.image}" alt="${art.title}" onerror="this.src='https://placehold.co/400?text=Art+Missing'"></div>
+                            <div class="art-info"><div class="art-title">${art.title}</div><div class="art-artist"><i class="fa-solid fa-paintbrush"></i> ${translations[currentLang]['artist-label']} ${art.artist}</div><div class="art-desc">${art.description || ""}</div></div>
+                        </div>`;
+                });
+            }
+            setupSliderLogic();
+        }
+
+        let currentTranslate = 0; let maxTranslate = 0;
+        function setupSliderLogic() {
+            const track = document.getElementById('musicContainer'); const sliderOuter = document.getElementById('sliderOuter');
+            if (!track || !sliderOuter || albums.length === 0) return;
+            const step = 338; 
+            const updateMaxTranslate = () => { maxTranslate = Math.min(0, sliderOuter.querySelector('.slider-container').offsetWidth - track.scrollWidth - 10); };
+            updateMaxTranslate(); window.addEventListener('resize', updateMaxTranslate);
+            const markActiveCards = () => {
+                const cw = sliderOuter.querySelector('.slider-container').offsetWidth;
+                track.querySelectorAll('.album-card').forEach((card, idx) => { const left = idx * step + currentTranslate; card.classList.toggle('active-card-view', left >= -10 && (left + 310) <= cw + 10); });
+            };
+            markActiveCards();
+            document.getElementById('slideNext').onclick = () => { currentTranslate -= step; if (currentTranslate < maxTranslate) currentTranslate = maxTranslate; track.style.transform = `translateX(${currentTranslate}px)`; markActiveCards(); };
+            document.getElementById('slidePrev').onclick = () => { currentTranslate += step; if (currentTranslate > 0) currentTranslate = 0; track.style.transform = `translateX(${currentTranslate}px)`; markActiveCards(); };
+            document.getElementById('slideNext').onmouseenter = () => { if (currentTranslate > maxTranslate) { sliderOuter.style.setProperty('--peek-next-offset', `${currentTranslate - 50}px`); sliderOuter.classList.add('peek-next'); } };
+            document.getElementById('slideNext').onmouseleave = () => { sliderOuter.classList.remove('peek-next'); };
+            document.getElementById('slidePrev').onmouseenter = () => { if (currentTranslate < 0) { sliderOuter.style.setProperty('--peek-prev-offset', `${currentTranslate + 50}px`); sliderOuter.classList.add('peek-prev'); } };
+            document.getElementById('slidePrev').onmouseleave = () => { sliderOuter.classList.remove('peek-prev'); };
+        }
+
+        function openAlbumDetails(index) {
+            const album = albums[index]; const modalBody = document.getElementById('albumModalBody');
+            let tracksListHtml = album.tracks && album.tracks.length > 0 ? album.tracks.map(t => `<li>${t}</li>`).join('') : `<p style="color:var(--text-color); font-style:italic; padding-left:15px;">${translations[currentLang]['empty-tracks']}</p>`;
+            modalBody.innerHTML = `
+                <div style="display:flex; gap:25px; align-items:center; margin-bottom:25px; border-bottom:1px solid rgba(255, 69, 0, 0.15); padding-bottom:20px; flex-wrap:wrap;">
+                    <div style="width:120px; height:120px; border-radius:16px; overflow:hidden; background:#140e0e; border:1px solid rgba(255,69,0,0.3); display:flex; align-items:center; justify-content:center; font-size:35px; color:#ff4500;"><img src="${album.cover}" alt="${album.title}" onerror="this.style.opacity='0'; this.parentNode.insertAdjacentHTML('beforeend', '<i class=\'fa-solid fa-music\'></i>')" style="width:100%; height:100%; object-fit:cover;"></div>
+                    <div><span style="font-size:12px; text-transform:uppercase; font-weight:700; color:var(--accent-color); background:rgba(255, 69, 0, 0.1); padding:4px 8px; border-radius:6px;">${album.type}</span><h2 style="font-family:'Outfit'; font-size:28px; font-weight:800; margin-top:5px; margin-bottom:2px;">${album.title}</h2><span style="color:var(--text-color); font-size:14px; font-weight:500;">${translations[currentLang]['release-year-label']} ${album.year}</span></div>
+                </div>
+                <p style="color:#cbd5e1; line-height:1.6; font-size:16px; margin-bottom:25px; background:rgba(255,255,255,0.01); padding:15px; border-radius:12px;">${album.description || translations[currentLang]['no-desc']}</p>
+                <h3 style="font-family:'Outfit'; font-size:18px; font-weight:700; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px;">${translations[currentLang]['tracklist-title']}</h3><ol class="tracklist">${tracksListHtml}</ol>
+            `;
+            openModal('albumModal');
+        }
+
+        function openArtLightbox(index) {
+            const art = artWorks[index];
+            document.getElementById('lightboxContentBody').innerHTML = `
+                <h2 style="font-family:'Outfit'; font-size: 26px; color: var(--text-light); text-align: left; width: 100%; margin-bottom: 5px;">${art.title}</h2>
+                <div style="font-size: 14px; color: var(--butterfly-color); font-weight: 700; margin-bottom: 20px; text-align: left; width: 100%;"><i class="fa-solid fa-palette"></i> ${translations[currentLang]['drawn-by']} ${art.artist}</div>
+                <div class="lightbox-img-wrapper"><img src="${art.image}" alt="${art.title}" onerror="this.src='https://placehold.co/800?text=Art+Missing'"></div>
+                <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; text-align: left; background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: 12px; border-left: 3px solid var(--accent-color); width: 100%;">${art.description || translations[currentLang]['no-desc']}</p>
+            `;
+            openModal('lightboxModal');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+        window.addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id); });
+
+        // Первичный старт с полной асинхронной защитой
+        async function loadAndInit() {
+            await loadDataFromJSON();
+            applyLanguage();
+        }
+
+        loadAndInit();
+    </script>
+</body>
+</html>
