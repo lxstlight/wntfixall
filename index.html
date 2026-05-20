@@ -236,75 +236,80 @@
         .nav-links .ai-link { color: var(--butterfly-color); }
         .nav-links .ai-link:hover { background: rgba(0, 210, 255, 0.1); color: var(--butterfly-color); }
 
-        .fixed-collab-badge { position: fixed; bottom: 30px; right: 30px; background: rgba(12, 12, 18, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255, 69, 0, 0.25); padding: 12px 18px; border-radius: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 0, 255, 0.15); z-index: 999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .fixed-collab-badge:hover { border-color: var(--accent-color); box-shadow: 0 12px 35px rgba(255, 69, 0, 0.25), 0 0 25px rgba(255, 0, 255, 0.15); transform: translateY(-4px); }
+        /* --- НОВЫЙ КОМПАКТНЫЙ БЛОК СОЦИАЛЬНЫХ СЕТЕЙ (SOCIAL DOCK) --- */
+        .fixed-social-dock {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(12, 12, 18, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 69, 0, 0.1);
+            z-index: 999;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fixed-social-dock:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 12px 35px rgba(255, 69, 0, 0.25);
+            transform: translateY(-2px);
+        }
         
-        /* ПЛАВАЮЩАЯ ИКОНКА YOUTUBE */
-        .fixed-youtube-badge {
-            position: fixed;
-            bottom: 160px;
-            right: 30px;
-            background: rgba(255, 0, 0, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 0, 0, 0.1);
-            z-index: 999;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #ff3333;
-            font-size: 20px;
-            text-decoration: none;
-        }
-        .fixed-youtube-badge:hover {
-            background: #ff0000;
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 12px 35px rgba(255, 0, 0, 0.5), 0 0 25px rgba(255, 0, 0, 0.25);
-            transform: translateY(-4px) scale(1.08);
-        }
-
-        /* ПЛАВАЮЩАЯ ИКОНКА FURAFFINITY */
-        .fixed-furaffinity-badge {
-            position: fixed;
-            bottom: 105px;
-            right: 30px;
-            background: rgba(250, 175, 64, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(250, 175, 64, 0.3);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(250, 175, 64, 0.1);
-            z-index: 999;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #faaf40;
-            text-decoration: none;
+        .dock-link {
             font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .fixed-furaffinity-badge:hover {
-            background: #faaf40;
-            color: #121212;
-            border-color: transparent;
-            box-shadow: 0 12px 35px rgba(250, 175, 64, 0.5), 0 0 25px rgba(250, 175, 64, 0.25);
-            transform: translateY(-4px) scale(1.08);
+        
+        /* Индивидуальная неоновая подсветка для каждой иконки в доке */
+        .dock-link.yt:hover {
+            color: #ff3333;
+            background: rgba(255, 0, 0, 0.12);
+            border-color: rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            transform: scale(1.15) translateY(-2px);
         }
-
-        .collab-icon { width: 36px; height: 36px; background: rgba(255, 69, 0, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-color); font-size: 15px; transition: all 0.3s; }
-        .fixed-collab-badge:hover .collab-icon { background: var(--accent-gradient); color: white; box-shadow: 0 0 10px var(--glow-color); }
-        .collab-text { display: flex; flex-direction: column; }
-        .collab-text span { font-size: 10px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
-        .collab-text a { font-size: 13px; color: var(--text-light); font-weight: 600; transition: color 0.3s; font-family: 'Outfit', monospace; }
-        .collab-text a:hover { color: var(--butterfly-color); }
+        .dock-link.fa:hover {
+            color: #faaf40;
+            background: rgba(250, 175, 64, 0.12);
+            border-color: rgba(250, 175, 64, 0.4);
+            box-shadow: 0 0 15px rgba(250, 175, 64, 0.4);
+            transform: scale(1.15) translateY(-2px);
+        }
+        .dock-link.tg:hover {
+            color: #2AABEE;
+            background: rgba(42, 171, 238, 0.12);
+            border-color: rgba(42, 171, 238, 0.4);
+            box-shadow: 0 0 15px rgba(42, 171, 238, 0.4);
+            transform: scale(1.15) translateY(-2px);
+        }
+        .dock-link.mail:hover {
+            color: var(--accent-color);
+            background: rgba(255, 69, 0, 0.12);
+            border-color: rgba(255, 69, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+            transform: scale(1.15) translateY(-2px);
+        }
+        
+        /* Декоративный разделитель */
+        .dock-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
 
         /* --- ПЛЕЕР --- */
         .glowing-music-player { 
@@ -742,6 +747,17 @@
             font-size: 22px;
             margin-left: 3px;
         }
+        
+        /* Стили адаптивности для Social Dock на мобильных устройствах */
+        @media (max-width: 576px) {
+            .fixed-social-dock {
+                bottom: 20px;
+                right: 5%;
+                left: 5%;
+                justify-content: center;
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -870,20 +886,21 @@
         </div>
     </div>
 
-    <!-- ФИКСИРОВАННЫЕ ИКОНКИ-ССЫЛКИ В УГЛУ -->
-    <a href="https://www.youtube.com/@raidbrony" target="_blank" class="fixed-youtube-badge" title="YouTube">
-        <i class="fa-brands fa-youtube"></i>
-    </a>
-    <a href="https://www.furaffinity.net/user/raidash" target="_blank" class="fixed-furaffinity-badge" title="FurAffinity">
-        <i class="fa-solid fa-paw"></i>
-    </a>
-
-    <div class="fixed-collab-badge">
-        <div class="collab-icon"><i class="fa-solid fa-envelope"></i></div>
-        <div class="collab-text">
-            <span data-translate="collab-widget-title">По вопросам сотрудничества</span>
-            <a href="mailto:raidbronywork@yandex.ru">raidbronywork@yandex.ru</a>
-        </div>
+    <!-- НОВАЯ ОБЪЕДИНЕННАЯ СОЦ. ПАНЕЛЬ (SOCIAL DOCK) -->
+    <div class="fixed-social-dock">
+        <a href="https://www.youtube.com/@raidbrony" target="_blank" class="dock-link yt" title="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a href="https://www.furaffinity.net/user/raidash" target="_blank" class="dock-link fa" title="FurAffinity">
+            <i class="fa-solid fa-paw"></i>
+        </a>
+        <a href="https://t.me/wntfixall" target="_blank" class="dock-link tg" title="Telegram">
+            <i class="fa-brands fa-telegram"></i>
+        </a>
+        <div class="dock-divider"></div>
+        <a href="mailto:raidbronywork@yandex.ru" class="dock-link mail" title="Email Collaboration">
+            <i class="fa-solid fa-envelope"></i>
+        </a>
     </div>
 
     <div id="main-page" class="page-view">
@@ -1286,9 +1303,11 @@
         let isPlaying = false;
 
         // Плавная регулировка громкости
-        volumeSlider.addEventListener('input', (e) => {
-            audioEl.volume = e.target.value;
-        });
+        if (volumeSlider) {
+            volumeSlider.addEventListener('input', (e) => {
+                audioEl.volume = e.target.value;
+            });
+        }
 
         function playGlobalAudio(audioUrl, title, sourceInfo, coverUrl) {
             if (!audioUrl) return;
@@ -1615,7 +1634,7 @@
             let tracksListHtml = album.tracks && album.tracks.length > 0 ? album.tracks.map(t => `<li>${t}</li>`).join('') : `<p style="color:var(--text-color); font-style:italic; padding-left:15px;">${translations[currentLang]['empty-tracks']}</p>`;
             modalBody.innerHTML = `
                 <div style="display:flex; gap:25px; align-items:center; margin-bottom:25px; border-bottom:1px solid rgba(255, 69, 0, 0.15); padding-bottom:20px; flex-wrap:wrap;">
-                    <div style="width:120px; height:120px; border-radius:16px; overflow:hidden; background:#140e0e; border:1px solid rgba(255,69,0,0.3); display:flex; align-items:center; justify-content:center; font-size:35px; color:#ff4500;"><img src="${album.cover}" alt="${album.title}" onerror="this.style.opacity='0'; this.parentNode.insertAdjacentHTML('beforeend', '<i class=\'fa-solid fa-music\'></i>')" style="width:100%; height:100%; object-fit:cover;"></div>
+                    <div style="width:120px; height:120px; border-radius:16px; overflow:hidden; background:#140e0e; border:1px solid rgba(255, 69, 0, 0.3); display:flex; align-items:center; justify-content:center; font-size:35px; color:#ff4500;"><img src="${album.cover}" alt="${album.title}" onerror="this.style.opacity='0'; this.parentNode.insertAdjacentHTML('beforeend', '<i class=\'fa-solid fa-music\'></i>')" style="width:100%; height:100%; object-fit:cover;"></div>
                     <div><span style="font-size:12px; text-transform:uppercase; font-weight:700; color:var(--accent-color); background:rgba(255, 69, 0, 0.1); padding:4px 8px; border-radius:6px;">${album.type}</span><h2 style="font-family:'Outfit'; font-size:28px; font-weight:800; margin-top:5px; margin-bottom:2px;">${album.title}</h2><span style="color:var(--text-color); font-size:14px; font-weight:500;">${translations[currentLang]['release-year-label']} ${album.year}</span></div>
                 </div>
                 <p style="color:#cbd5e1; line-height:1.6; font-size:16px; margin-bottom:25px; background:rgba(255,255,255,0.01); padding:15px; border-radius:12px;">${album.description || translations[currentLang]['no-desc']}</p>
@@ -1639,7 +1658,7 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
         window.addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id); });
 
-        // Первичный стапт с полной асинхронной защитой
+        // Первичный старт с полной асинхронной защитой
         async function loadAndInit() {
             await loadDataFromJSON();
             await loadLatestYouTubeVideo(); // Инициализация парсера видео
